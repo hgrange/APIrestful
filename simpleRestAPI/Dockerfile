@@ -21,9 +21,8 @@ COPY --from=builder --chown=1001:0  /build/$APP/src/main/liberty/config/ /config
 COPY --from=builder --chown=1001:0  /build/$APP/wlp-core-license.jar /tmp
 RUN  echo 'SERVER_HOST=*' > /config/bootstrap.properties
 
-RUN mkdir -p /opt/ibm/wlp/usr/shared/config/lib/global
-
-COPY --chown=1001:0 --from=builder /build/$APP/src/main/liberty/lib/* /opt/ibm/wlp/usr/shared/config/lib/global
+#RUN mkdir -p /opt/ibm/wlp/usr/shared/config/lib/global
+#COPY --chown=1001:0 --from=builder /build/$APP/src/main/liberty/lib/* /opt/ibm/wlp/usr/shared/config/lib/global
 
 # This script will add the requested XML snippets to enable Liberty features and grow image to be fit-for-purpose using featureUtility.
 # Only available in 'kernel-slim'. The 'full' tag already includes all features for convenience.
