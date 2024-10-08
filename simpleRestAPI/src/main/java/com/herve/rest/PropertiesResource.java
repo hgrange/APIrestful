@@ -34,14 +34,14 @@ public class PropertiesResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Properties getProperties() {
-//    public JsonObject getProperties() {
-    	/* JsonObject readObject = null;
+    public JsonObject getProperties() {
+    JsonObject readObject = null;
 		try {
 			ClassLoader myclass = getClass().getClassLoader();
-			URL resource = getClass().getClassLoader().getResource("BackupData.json");
+			//URL resource = getClass().getClassLoader().getResource("BackupData.json");
 			
-			JsonReader jsonReader = Json.createReader(new StringReader(Files.readString(Paths.get(resource.toURI()))));
-		    readObject = jsonReader.readObject();
+			//JsonReader jsonReader = Json.createReader(new StringReader(Files.readString(Paths.get(resource.toURI()))));
+		    // readObject = jsonReader.readObject();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
