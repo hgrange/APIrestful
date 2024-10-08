@@ -7,7 +7,7 @@ ARG APP
 
 COPY --chown=185:0 . /build/$APP
 
-RUN echo $APP && cd /build/$APP && tar -xvzf m2.tgz && mvn -o clean package -Dmaven.repo.local=/build/$APP/m2/repository
+RUN echo $APP && cd /build/$APP && tar -xvf m2.tar && mvn -o clean package -Dmaven.repo.local=/build/$APP/.m2/repository
 FROM icr.io/appcafe/websphere-liberty:kernel-java17-openj9-ubi
 ARG APP
 ARG TLS=true
