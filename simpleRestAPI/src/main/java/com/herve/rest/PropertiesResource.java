@@ -36,16 +36,16 @@ public class PropertiesResource {
     public Properties getProperties() {
     // public JsonObject getProperties() {
     JsonObject readObject = null;
-		// try {
+		 try {
 			ClassLoader myclass = getClass().getClassLoader();
 			URL resource = getClass().getClassLoader().getResource("BackupData.json");
 			
-			//JsonReader jsonReader = Json.createReader(new StringReader(Files.readString(Paths.get(resource.toURI()))));
+			JsonReader jsonReader = Json.createReader(new StringReader(Files.readString(Paths.get(resource.toURI()))));
 		    // readObject = jsonReader.readObject();
-	/*	} catch (IOException e) {
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace(); 
-		} catch (URISyntaxException e) {
+		 } /*catch (URISyntaxException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} */
