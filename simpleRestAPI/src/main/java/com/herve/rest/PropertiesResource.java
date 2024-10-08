@@ -39,9 +39,10 @@ public class PropertiesResource {
 		 try {
 			ClassLoader myclass = getClass().getClassLoader();
 			URL resource = getClass().getClassLoader().getResource("BackupData.json");
-			
-			JsonReader jsonReader = Json.createReader(new StringReader(Files.readString(Paths.get(resource.toURI()))));
-		    // readObject = jsonReader.readObject();
+			System.out.println("URL resource = "+ resource.toString() );
+			URI uri = resource.toURI();
+			java.nio.file.Path path = Paths.get(uri);
+			String s_path = Files.readString(path);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace(); 
