@@ -34,7 +34,7 @@ public class PropertiesResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Properties getProperties() {
-    public JsonObject getProperties() {
+    // public JsonObject getProperties() {
     JsonObject readObject = null;
 		try {
 			ClassLoader myclass = getClass().getClassLoader();
