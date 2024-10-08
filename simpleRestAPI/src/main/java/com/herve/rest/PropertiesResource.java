@@ -42,10 +42,10 @@ public class PropertiesResource {
 			System.out.println("URL resource = "+ resource.toString() );
 			URI uri = resource.toURI();
 			java.nio.file.Path path = Paths.get(uri);
-			String s_path = Files.readString(path);
+		/*	String s_path = Files.readString(path);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace(); 
+			e.printStackTrace(); */
 		 } catch (URISyntaxException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
