@@ -8,7 +8,7 @@
 
   <!-- tag::httpEndpoint[] -->
   <httpEndpoint httpPort="${http.port}" httpsPort="${https.port}"
-                id="defaultHttpEndpoint" host="*" />
+                id="defaultHttpEndpoint" host="${host}" />
   <!-- end::httpEndpoint[] -->
   
   <!-- tag::webApplication[] -->
