@@ -29,20 +29,13 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 
-// tag::path[]
 @Path("properties")
-// end::path[]
-public class PropertiesResource {
-
-    // tag::get[]
+public class PropertiesResource {  
     @GET
-    // end::get[]
-    // tag::produces[]
     @Produces(MediaType.APPLICATION_JSON)
-    // end::produces[]
-//    public Properties getProperties() {
-    public JsonObject getProperties() {
-    	JsonObject readObject = null;
+    public Properties getProperties() {
+//    public JsonObject getProperties() {
+    	/* JsonObject readObject = null;
 		try {
 			ClassLoader myclass = getClass().getClassLoader();
 			URL resource = getClass().getClassLoader().getResource("BackupData.json");
@@ -55,11 +48,11 @@ public class PropertiesResource {
 		} catch (URISyntaxException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
  
 
-        //return System.getProperties();
-		return readObject;
+        return System.getProperties();
+	//return readObject;
     }
 
     
