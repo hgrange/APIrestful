@@ -9,7 +9,7 @@ COPY --chown=185:0 . /build/$APP
 
 #RUN echo $APP && cd /build/$APP && tar -xf m2.tar && mvn -o clean package -Dmaven.repo.local=/build/$APP/.m2/repository
 RUN echo $APP && cd /build/$APP && mvn  clean package 
-FROM icr.io/appcafe/websphere-liberty:full-java17-openj9-ubi
+FROM icr.io/appcafe/websphere-liberty:kernel-java17-openj9-ubi
 ARG APP
 ARG TLS=true
 #USER 0
@@ -35,4 +35,4 @@ RUN features.sh
 # This script will add the requested server configurations, apply any interim fixes and populate caches to optimize runtime
 RUN bash -xv configure.sh 
 # Upgrade to production license 
-# RUN java -jar /tmp/wlp-core-license.jar --acceptLicense /opt/ibm/wlp && rm /tmp/wlp-core-license.jar
+RUN java -jar /tmp/wlp-core-license.jar --acceptLicense /opt/ibm/wlp && rm /tmp/wlp-core-license.jar
