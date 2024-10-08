@@ -48,7 +48,7 @@ public class PropertiesResource {
 		} catch (URISyntaxException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}*/
+		}
  
 
         return System.getProperties();
