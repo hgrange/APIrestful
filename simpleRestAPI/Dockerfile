@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/ubi8/openjdk-11:latest as builder
+FROM registry.access.redhat.com/ubi9/openjdk-17-runtime:latest as builder
 WORKDIR /build
 ARG APP
 
@@ -8,7 +8,7 @@ ARG APP
 COPY --chown=185:0 . /build/$APP
 
 RUN echo $APP && cd /build/$APP && mvn -o clean package -Dmaven.repo.local=/build/$APP/m2/repository 
-FROM icr.io/appcafe/websphere-liberty:kernel-java8-ibmjava-ubi
+FROM icr.io/appcafe/websphere-liberty:kernel-java17-openj9-ubi
 ARG APP
 ARG TLS=true
 #USER 0
