@@ -36,7 +36,7 @@ public class PropertiesResource {
     public Properties getProperties() {
     // public JsonObject getProperties() {
     JsonObject readObject = null;
-		try {
+		// try {
 			ClassLoader myclass = getClass().getClassLoader();
 			URL resource = getClass().getClassLoader().getResource("BackupData.json");
 			
@@ -44,11 +44,11 @@ public class PropertiesResource {
 		    // readObject = jsonReader.readObject();
 	/*	} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace(); */
+			e.printStackTrace(); 
 		} catch (URISyntaxException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		} */
  
 
         return System.getProperties();
