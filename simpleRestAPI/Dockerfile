@@ -7,7 +7,7 @@ ARG APP
 
 COPY --chown=185:0 . /build/$APP
 
-RUN echo $APP && cd /build/$APP && mvn -o clean package 
+RUN echo $APP && cd /build/$APP && mvn clean package 
 FROM icr.io/appcafe/websphere-liberty:kernel-java17-openj9-ubi
 ARG APP
 ARG TLS=true
