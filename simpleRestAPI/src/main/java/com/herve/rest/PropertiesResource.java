@@ -46,6 +46,9 @@ public class PropertiesResource {
 			System.out.println("uri = " + uri.toString());
 			java.nio.file.Path path = Paths.get(uri);
 			String s_path = Files.readString(path);
+			StringReader sr = new StringReader( s_path);
+			JsonReader jsonReader = Json.createReader(sr);
+			readObject = jsonReader.readObject();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace(); 
