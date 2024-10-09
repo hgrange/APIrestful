@@ -41,6 +41,7 @@ public class PropertiesResource {
 			URL resource = getClass().getClassLoader().getResource("BackupData.json");
 			System.out.println("URL resource = "+ resource.toString() );
 			URI uri = resource.toURI();
+			System.out.println("uri = " + uri.toString());
 		/*	java.nio.file.Path path = Paths.get(uri);
 			String s_path = Files.readString(path);
 		} catch (IOException e) {
