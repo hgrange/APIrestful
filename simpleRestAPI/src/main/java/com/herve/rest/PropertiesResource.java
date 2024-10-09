@@ -33,8 +33,8 @@ import jakarta.ws.rs.core.MediaType;
 public class PropertiesResource {  
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Properties getProperties() {
-    // public JsonObject getProperties() {
+    // public Properties getProperties() {
+    public JsonObject getProperties() {
     JsonObject readObject = null;
 		 try {
 			ClassLoader myclass = getClass().getClassLoader();
@@ -54,8 +54,8 @@ public class PropertiesResource {
 		} 
  
 
-        return System.getProperties();
-	//return readObject;
+        // return System.getProperties();
+	return readObject;
     }
 
     
