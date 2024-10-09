@@ -41,7 +41,8 @@ public class PropertiesResource {
 			URL resource = getClass().getClassLoader().getResource("BackupData.json");
 			System.out.println("URL resource = "+ resource.toString() );
 			String sFile = resource.toString().replaceFirst("wsjar:", "");
-			URI uri = new URI(sFile);
+			//URI uri = new URI(sFile);
+			URI uri =  new URI(resource.toString());
 			System.out.println("uri = " + uri.toString());
 			java.nio.file.Path path = Paths.get(uri);
 			String s_path = Files.readString(path);
