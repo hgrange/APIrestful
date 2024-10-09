@@ -1,17 +1,13 @@
 <server description="Intro REST Guide Liberty server">
-  <!-- tag::featureManager[] -->
-  <featureManager>
+    <featureManager>
       <feature>restfulWS-3.1</feature>
       <feature>jsonb-3.0</feature>
   </featureManager>
-  <!-- end::featureManager[] -->
-
-  <!-- tag::httpEndpoint[] -->
+  
   <httpEndpoint httpPort="${http.port}" httpsPort="${https.port}"
                 id="defaultHttpEndpoint" host="${host}" />
-  <!-- end::httpEndpoint[] -->
-  
-  <!-- tag::webApplication[] -->
+ 
+
   <webApplication location="simpleAPI.war" contextRoot="/"/>
-  <!-- end::webApplication[] -->
+  <applicationManager autoExpand="true"/>
 </server>
