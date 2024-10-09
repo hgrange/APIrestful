@@ -40,15 +40,14 @@ public class PropertiesResource {
 			ClassLoader myclass = getClass().getClassLoader();
 			URL resource = getClass().getClassLoader().getResource("BackupData.json");
 			System.out.println("URL resource = "+ resource.toString() );
-			String f = resource.getFile();
-			System.out.println("resource.getFile() = "+ f );
-			URI uri = resource.toURI();
+			String sFile = resource.toString().replaceFirst("wsjar:", "");
+			URI uri = new URI(sFile);
 			System.out.println("uri = " + uri.toString());
-		/*	java.nio.file.Path path = Paths.get(uri);
+			java.nio.file.Path path = Paths.get(uri);
 			String s_path = Files.readString(path);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace(); */
+			e.printStackTrace(); 
 		 } catch (URISyntaxException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
