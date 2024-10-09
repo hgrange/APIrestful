@@ -1,4 +1,4 @@
-// tag::copyright[]
+
 /*******************************************************************************
  * Copyright (c) 2017, 2022 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
@@ -8,7 +8,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-// end::copyright[]
+
 package com.herve.rest;
 
 import java.io.IOException;
@@ -35,7 +35,7 @@ public class PropertiesResource {
     @Produces(MediaType.APPLICATION_JSON)
     // public Properties getProperties() {
     public JsonObject getProperties() {
-    JsonObject readObject = null;
+                 JsonObject readObject = null;
 		 try {
 			ClassLoader myclass = getClass().getClassLoader();
 			URL resource = getClass().getClassLoader().getResource("BackupData.json");
