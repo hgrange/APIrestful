@@ -12,7 +12,7 @@ RUN echo $APP && cd /build/$APP && mvn  clean package
 FROM icr.io/appcafe/websphere-liberty:kernel-java17-openj9-ubi
 ARG APP
 ARG TLS=true
-#USER 0
+USER 0
 #RUN dnf install -y procps-ng && dnf clean all
 RUN dnf update -y && dnf install -y curl tar gzip jq  procps util-linux vim-minimal iputils net-tools
 USER 1001
