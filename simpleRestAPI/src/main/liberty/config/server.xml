@@ -8,6 +8,6 @@
                 id="defaultHttpEndpoint" host="${host}" />
  
 
-  <webApplication location="simpleAPI.war" contextRoot="/"/>
+  <webApplication location="simpleAPI.war" contextRoot="/v1"/>
   <applicationManager autoExpand="true"/>
 </server>
