@@ -5,6 +5,7 @@
   </featureManager>
   
   <httpEndpoint httpPort="${http.port}" httpsPort="${https.port}"
+      accessLoggingRef="accessLogging" id="defaultHttpEndpoint" host="${host}" />
                 id="defaultHttpEndpoint" host="${host}" />
  
 
