@@ -4,11 +4,9 @@
       <feature>jsonb-3.0</feature>
   </featureManager>
   
-  <httpEndpoint httpPort="${http.port}" httpsPort="${https.port}"
-      accessLoggingRef="accessLogging" id="defaultHttpEndpoint" host="${host}" />
-                id="defaultHttpEndpoint" host="${host}" />
- 
-
+  <httpEndpoint httpPort="${http.port}" httpsPort="${https.port}" id="defaultHttpEndpoint" host="${host}" 
+        <accessLogging filepath="${server.output.dir}/logs/access.log"/>
+                
   <webApplication location="simpleAPI.war" contextRoot="/v1"/>
   <applicationManager autoExpand="true"/>
 </server>
