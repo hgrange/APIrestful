@@ -5,7 +5,7 @@
   </featureManager>
   
   <httpEndpoint httpPort="${http.port}" httpsPort="${https.port}" id="defaultHttpEndpoint" host="${host}" 
-        <accessLogging filepath="${server.output.dir}/logs/access.log"/>
+        <accessLogging filepath="${LOG_DIR}/access.log"/>
                 
   <webApplication location="simpleAPI.war" contextRoot="/v1"/>
   <applicationManager autoExpand="true"/>
