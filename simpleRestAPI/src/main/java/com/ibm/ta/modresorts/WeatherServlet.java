@@ -39,7 +39,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import com.ibm.ta.modresorts.exception.ExceptionHandler;
 
 
-@WebServlet(value = "/")
+@WebServlet(value = "/resorts/weather")
 public class WeatherServlet extends HttpServlet {
 
 
