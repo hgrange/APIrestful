@@ -8,6 +8,6 @@
   <httpEndpoint httpPort="${http.port}" httpsPort="${https.port}" id="defaultHttpEndpoint" host="${host}">
         <accessLogging filepath="${LOG_DIR}/access.log"/>
   </httpEndpoint>             
-  <webApplication location="simpleAPI.war" contextRoot="/v1"/>
+  <webApplication location="simpleAPI.war" contextRoot="/"/>
   <applicationManager autoExpand="true"/>
 </server>
