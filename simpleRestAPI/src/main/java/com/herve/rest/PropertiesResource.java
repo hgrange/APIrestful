@@ -1,4 +1,4 @@
-
+// tag::copyright[]
 /*******************************************************************************
  * Copyright (c) 2017, 2022 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
@@ -8,7 +8,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-
+// end::copyright[]
 package com.herve.rest;
 
 import java.io.IOException;
@@ -29,37 +29,47 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 
+// tag::path[]
 @Path("properties")
-public class PropertiesResource {  
+// end::path[]
+public class PropertiesResource {
+
+    // tag::get[]
     @GET
+    // end::get[]
+    // tag::produces[]
     @Produces(MediaType.APPLICATION_JSON)
-    // public Properties getProperties() {
+    // end::produces[]
+//    public Properties getProperties() {
     public JsonObject getProperties() {
-                 JsonObject readObject = null;
-		 try {
+    	JsonObject readObject = null;
+		try {
 			ClassLoader myclass = getClass().getClassLoader();
 			URL resource = getClass().getClassLoader().getResource("BackupData.json");
-			System.out.println("URL resource = "+ resource.toString() );
 			String sFile = resource.toString().replaceFirst("wsjar:", "");
-			//URI uri = new URI(sFile);
-			URI uri =  new URI(resource.toString());
+			System.out.println("URL resource = "+ resource.toString() );
+			URI uri = new URI(sFile);
 			System.out.println("uri = " + uri.toString());
 			java.nio.file.Path path = Paths.get(uri);
 			String s_path = Files.readString(path);
+			
 			StringReader sr = new StringReader( s_path);
+			
 			JsonReader jsonReader = Json.createReader(sr);
-			readObject = jsonReader.readObject();
+			
+			//JsonReader jsonReader = Json.createReader(new StringReader(Files.readString(Paths.get(resource.toURI()))));
+		    readObject = jsonReader.readObject(); 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace(); 
-		 } catch (URISyntaxException e) {
+		} catch (URISyntaxException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} 
+		}
  
 
-        // return System.getProperties();
-	return readObject;
+        //return System.getProperties();
+		return readObject;
     }
 
     

@@ -15,7 +15,7 @@ import jakarta.ws.rs.core.Application;
 import jakarta.ws.rs.ApplicationPath;
 
 // tag::applicationPath[]
-@ApplicationPath("order")
+@ApplicationPath("v1/order")
 // end::applicationPath[]
 // tag::systemApplication[]
 public class OrderApplication extends Application {
