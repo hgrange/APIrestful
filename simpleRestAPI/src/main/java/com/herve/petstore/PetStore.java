@@ -54,12 +54,14 @@ public class PetStore {
     	    
     	    if ( status.equals("sold") ) {
     	    	fileName = "PetStoreFindByStatus-Sold.json";
+    	    	System.out.println("fileName = " + fileName);
     	    } else {
     	    	return null;
     	    }
     	    
     		ClassLoader myclass = getClass().getClassLoader();
 			URL resource = getClass().getClassLoader().getResource(fileName);
+			System.out.println("URL resource = " + resource);
 			String sFile = resource.toString().replaceFirst("wsjar:", "");
 			System.out.println("URL resource = "+ resource.toString() );
 			URI uri;
@@ -70,6 +72,7 @@ public class PetStore {
 				System.out.println("uri = " + uri.toString());
 				java.nio.file.Path path = Paths.get(uri);
 				String s_path = Files.readString(path);
+				
 			
 				StringReader sr = new StringReader( s_path);
 			
