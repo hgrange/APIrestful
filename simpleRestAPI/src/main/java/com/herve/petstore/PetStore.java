@@ -9,7 +9,7 @@
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
 // end::copyright[]
-package com.herve.rest;
+package com.herve.petstore;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -21,34 +21,45 @@ import java.nio.file.Paths;
 import java.util.Properties;
 
 import jakarta.json.Json;
+import jakarta.json.JsonArray;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonReader;
 import jakarta.json.stream.JsonParser;
 import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.DefaultValue;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.MultivaluedMap;
 import jakarta.ws.rs.core.UriInfo;
 
-@Path("order")
-public class PropertiesResource {
+@Path("pet")
+public class PetStore {
 
  
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("properties")
-    public JsonObject getProperties() {
-    	JsonObject readObject = null;
-		
-			ClassLoader myclass = getClass().getClassLoader();
-			URL resource = getClass().getClassLoader().getResource("BackupData.json");
+    @Path("findByStatus")
+
+    public JsonArray findByStatus(@DefaultValue("sold") @QueryParam("status") String status) {
+    	    JsonArray jsonArray = null;
+    	    String fileName;
+    	    
+    	    if ( status.equals("sold") ) {
+    	    	fileName = "PetStoreFindByStatus-Sold.json";
+    	    } else {
+    	    	return null;
+    	    }
+    	    
+    		ClassLoader myclass = getClass().getClassLoader();
+			URL resource = getClass().getClassLoader().getResource(fileName);
 			String sFile = resource.toString().replaceFirst("wsjar:", "");
 			System.out.println("URL resource = "+ resource.toString() );
 			URI uri;
@@ -65,19 +76,18 @@ public class PropertiesResource {
 				JsonReader jsonReader = Json.createReader(sr);
 			
 				//JsonReader jsonReader = Json.createReader(new StringReader(Files.readString(Paths.get(resource.toURI()))));
-			    readObject = jsonReader.readObject(); 
+			    jsonArray = jsonReader.readArray();
             } catch (URISyntaxException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
+		       e.printStackTrace();
     } catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-     	return readObject;
+     	return jsonArray;
    }
     
     @POST
-    @Path("properties/{var:.+}")
+    @Path("{var:.+}")
     @Produces(MediaType.APPLICATION_JSON)
 
     public String post(@Context UriInfo ui, @PathParam("var") String path, @Context HttpHeaders headers) {
@@ -89,7 +99,7 @@ public class PropertiesResource {
     }
     
     @PUT
-    @Path("properties/{var:.+}")
+    @Path("{var:.+}")
     @Produces(MediaType.APPLICATION_JSON)
 
     public String put(@Context UriInfo ui, @PathParam("var") String path, @Context HttpHeaders headers) {

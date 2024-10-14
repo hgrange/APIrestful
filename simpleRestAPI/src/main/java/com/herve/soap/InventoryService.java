@@ -19,4 +19,8 @@ public class InventoryService {
                 new InventoryItem(1,"Book",new Date()),
                 new InventoryItem(1,"Monitor",new Date()));
     }
+    @WebMethod(operationName = "InventoryItemCreate")
+    public InventoryItem setInventoryItem(@WebParam int id,@WebParam String name){
+        return new InventoryItem(id,name,new Date());
+    }
 }
