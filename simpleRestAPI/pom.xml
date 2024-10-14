@@ -12,17 +12,10 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
-        <!-- Liberty configuration -->
-        <!-- tag::defaultHttpPort[] -->
         <liberty.var.http.port>9080</liberty.var.http.port>
-        <!-- end::defaultHttpPort[] -->
-        <!-- tag::defaultHttpsPort[] -->
         <liberty.var.https.port>9443</liberty.var.https.port>
-        <!-- end::defaultHttpsPort[] -->
-        <!-- tag::appContextRoot[] -->
-        <liberty.var.app.context.root>LibertyProject</liberty.var.app.context.root>
-        <!-- end::appContextRoot[] -->
-    </properties>
+         <liberty.var.app.context.root>LibertyProject</liberty.var.app.context.root>
+      </properties>
 
     <dependencies>
         <!-- Provided dependencies -->
@@ -38,6 +31,12 @@
             <version>6.1</version>
             <type>pom</type>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.xml.ws</groupId>
+            <artifactId>jaxws-ri</artifactId>
+            <version>4.0.0</version>
+            <type>pom</type>
         </dependency>
         <!-- For tests -->
         <dependency>
