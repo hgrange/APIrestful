@@ -1,0 +1,162 @@
+[
+      {
+      "id": 6,
+      "category":       {
+         "id": 3,
+         "name": "cat"
+      },
+      "name": "Kuk6",
+      "photoUrls": ["string"],
+      "tags": [      {
+         "id": 3,
+         "name": "pet"
+      }],
+      "status": "sold"
+   },
+      {
+      "id": 888,
+      "category":       {
+         "id": 2,
+         "name": "dog"
+      },
+      "name": "Musik",
+      "photoUrls": ["string"],
+      "tags": [      {
+         "id": 5,
+         "name": "wild"
+      }],
+      "status": "sold"
+   },
+      {
+      "id": 1231,
+      "category":       {
+         "id": 0,
+         "name": "Ð¡Ð¾Ð±Ð°ÐºÐ°"
+      },
+      "name": "Ð§Ð°Ðº",
+      "photoUrls": ["string"],
+      "tags": [      {
+         "id": 0,
+         "name": "string"
+      }],
+      "status": "sold"
+   },
+      {
+      "id": 20252,
+      "category":       {
+         "id": 302,
+         "name": "abc category 2"
+      },
+      "name": "doggie 15",
+      "photoUrls": ["string"],
+      "tags": [      {
+         "id": 401,
+         "name": "xyz tags"
+      }],
+      "status": "sold"
+   },
+      {
+      "id": 7574746,
+      "category":       {
+         "id": 1,
+         "name": "Cat"
+      },
+      "name": "Hardy",
+      "photoUrls": ["https://i.pinimg.com/originals/5c/2c/44/5c2c44f16da1caf134c00bc4f9c72ea0.jpg"],
+      "tags": [      {
+         "id": 7805,
+         "name": "Mainecoon"
+      }],
+      "status": "sold"
+   },
+      {
+      "id": 123,
+      "name": "Miguelito Feliz",
+      "photoUrls": [],
+      "tags": [],
+      "status": "sold"
+   },
+      {
+      "id": 9999999999,
+      "category":       {
+         "id": 0,
+         "name": "Home, Outdoors & Tools"
+      },
+      "name": "jackal",
+      "tags": [      {
+         "id": 0,
+         "name": "mink"
+      }],
+      "status": "sold"
+   },
+      {
+      "id": 938,
+      "category":       {
+         "id": 938,
+         "name": "Nora"
+      },
+      "name": "CatTest",
+      "photoUrls": ["DecayedTannerHarpooneers"],
+      "tags": [      {
+         "id": 0,
+         "name": "Nora"
+      }],
+      "status": "sold"
+   },
+      {
+      "id": 36135778,
+      "category":       {
+         "id": 36135778,
+         "name": "string"
+      },
+      "name": "cat",
+      "photoUrls": ["SmeerenbergOscarGreenwich"],
+      "tags": [      {
+         "id": 0,
+         "name": "string"
+      }],
+      "status": "sold"
+   },
+      {
+      "id": 7574747,
+      "category":       {
+         "id": 7574747,
+         "name": "string"
+      },
+      "name": "soehcl",
+      "photoUrls": ["IncentivePreferringCycloid"],
+      "tags": [      {
+         "id": 0,
+         "name": "string"
+      }],
+      "status": "sold"
+   },
+      {
+      "id": 3,
+      "category":       {
+         "id": 3,
+         "name": "Jack-1"
+      },
+      "name": "Jack-1",
+      "photoUrls": ["jack-1"],
+      "tags": [      {
+         "id": 3,
+         "name": "Jack-1"
+      }],
+      "status": "sold"
+   },
+      {
+      "id": 732680,
+      "category":       {
+         "id": 968741,
+         "name": "sabre"
+      },
+      "name": "puppy2",
+      "photoUrls": ["string"],
+      "tags": [      {
+         "id": 678887,
+         "name": "sohan"
+      }],
+      "status": "sold"
+   }
+]
