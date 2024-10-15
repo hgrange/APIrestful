@@ -13,6 +13,8 @@
   <httpEndpoint httpPort="${http.port}" httpsPort="${https.port}"
       accessLoggingRef="accessLogging" id="defaultHttpEndpoint" host="${host}" />
   <webApplication location="simpleAPI.war" contextRoot="/"/>
+
+  <applicationMonitor updateTrigger="mbean" dropinsEnabled="false" />
   
    <!-- Derby Library Configuration -->
   <library id="derbyJDBCLib">
