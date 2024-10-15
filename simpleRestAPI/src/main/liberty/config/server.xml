@@ -13,6 +13,7 @@
   <httpEndpoint httpPort="${http.port}" httpsPort="${https.port}"
       accessLoggingRef="accessLogging" id="defaultHttpEndpoint" host="${host}" />
   <webApplication location="simpleAPI.war" contextRoot="/"/>
+  <applicationManager autoExpand="true"/>
 
   <applicationMonitor updateTrigger="mbean" dropinsEnabled="false" />
   
