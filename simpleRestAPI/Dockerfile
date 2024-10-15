@@ -9,7 +9,7 @@ COPY --chown=185:0 . /build/$APP
 
 #RUN echo $APP && cd /build/$APP && tar -xf m2.tar && mvn -o clean package -Dmaven.repo.local=/build/$APP/.m2/repository
 RUN echo $APP && cd /build/$APP && mvn  clean package 
-RUN sleep 9999999
+
 FROM icr.io/appcafe/websphere-liberty:kernel-java17-openj9-ubi
 ARG APP
 ARG TLS=true
@@ -22,7 +22,10 @@ COPY --from=builder --chown=1001:0  /build/$APP/target/*.*ar /config/apps/
 COPY --from=builder --chown=1001:0  /build/$APP/src/main/liberty/config/ /config/
 COPY --from=builder --chown=1001:0  /build/$APP/wlp-core-license.jar /tmp
 
-#RUN mkdir -p /opt/ibm/wlp/usr/shared/config/lib/global
+RUN mkdir -p /opt/ibm/wlp/usr/shared/config/lib/global
+COPY --from=builder --chown=1001:0 /home/jboss/.m2/repository/org/apache/derby/derby/10.15.1.3/derby-10.15.1.3.jar /opt/ibm/wlp/usr/shared/config/lib/global
+COPY --from=builder --chown=1001:0 /home/jboss/.m2/repository/org/apache/derby/derbytools/10.15.1.3/derbytools-10.15.1.3.jar /opt/ibm/wlp/usr/shared/config/lib/global
+COPY --from=builder --chown=1001:0 /home/jboss/.m2/repository/org/apache/derby/derbyshared/10.15.1.3/derbyshared-10.15.1.3.jar /opt/ibm/wlp/usr/shared/config/lib/global
 #COPY --chown=1001:0 --from=builder /build/$APP/src/main/liberty/lib/* /opt/ibm/wlp/usr/shared/config/lib/global
 
 # This script will add the requested XML snippets to enable Liberty features and grow image to be fit-for-purpose using featureUtility.
