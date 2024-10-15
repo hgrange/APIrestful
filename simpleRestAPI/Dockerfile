@@ -20,13 +20,8 @@ USER 1001
 
 COPY --from=builder --chown=1001:0  /build/$APP/target/*.*ar /config/apps/
 COPY --from=builder --chown=1001:0  /build/$APP/src/main/liberty/config/ /config/
-COPY --from=builder --chown=1001:0  /build/$APP/wlp-core-license.jar /tmp
-
-RUN mkdir -p /opt/ibm/wlp/usr/shared/config/lib/global
-COPY --from=builder --chown=1001:0 /home/jboss/.m2/repository/org/apache/derby/derby/10.15.1.3/derby-10.15.1.3.jar /opt/ibm/wlp/usr/shared/config/lib/global
-COPY --from=builder --chown=1001:0 /home/jboss/.m2/repository/org/apache/derby/derbytools/10.15.1.3/derbytools-10.15.1.3.jar /opt/ibm/wlp/usr/shared/config/lib/global
-COPY --from=builder --chown=1001:0 /home/jboss/.m2/repository/org/apache/derby/derbyshared/10.15.1.3/derbyshared-10.15.1.3.jar /opt/ibm/wlp/usr/shared/config/lib/global
-#COPY --chown=1001:0 --from=builder /build/$APP/src/main/liberty/lib/* /opt/ibm/wlp/usr/shared/config/lib/global
+COPY --from=builder --chown=1001:0  /build/$APP/wlp-base-license.jar /tmp
+COPY --from=builder --chown=1001:0 /home/jboss/.m2/repository/org/apache/derby/derby/10.15.1.3/derby-10.15.1.3.jar /home/jboss/.m2/repository/org/apache/derby/derbyshared/10.15.1.3/derbyshared-10.15.1.3.jar /home/jboss/.m2/repository/org/apache/derby/derbytools/10.15.1.3/derbytools-10.15.1.3.jar /opt/ibm/wlp/usr/shared/resources
 
 # This script will add the requested XML snippets to enable Liberty features and grow image to be fit-for-purpose using featureUtility.
 # Only available in 'kernel-slim'. The 'full' tag already includes all features for convenience.
@@ -39,4 +34,4 @@ RUN features.sh
 # This script will add the requested server configurations, apply any interim fixes and populate caches to optimize runtime
 RUN bash -xv configure.sh 
 # Upgrade to production license 
-# RUN java -jar /tmp/wlp-core-license.jar --acceptLicense /opt/ibm/wlp && rm /tmp/wlp-core-license.jar
+RUN java -jar /tmp/wlp-base-license.jar --acceptLicense /opt/ibm/wlp && rm /tmp/wlp-base-license.jar
