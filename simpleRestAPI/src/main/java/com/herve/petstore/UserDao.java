@@ -19,7 +19,7 @@ public class UserDao {
 
     public User readUser(String username) {
     	User user = em.find(User.class, username);
-    	user.setPassword("*******");
+    	// user.setPassword("*******");
         return user;
     }
 
