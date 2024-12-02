@@ -1,0 +1,33 @@
+<server description="Intro REST Guide Liberty server">
+    <featureManager>
+      <feature>restfulWS-3.1</feature>
+      <feature>jsonb-3.0</feature>
+      <feature>localConnector-1.0</feature>
+      <feature>servlet-6.0</feature>
+      <feature>xmlWS-4.0</feature>
+      <feature>cdi-4.0</feature>
+      <feature>persistence-3.1</feature>
+      <feature>faces-4.0</feature>
+   <!--    <feature>adminCenter-1.0</feature>
+      <feature>monitor-1.0</feature> -->
+  </featureManager>
+
+  <httpAccessLogging id="accessLogging"/>  
+  <httpEndpoint httpPort="${http.port}" httpsPort="${https.port}"
+      accessLoggingRef="accessLogging" id="defaultHttpEndpoint" host="${host}" />
+  <webApplication location="simpleAPI.war" contextRoot="/"/>
+  
+   <!-- Derby Library Configuration -->
+  <library id="derbyJDBCLib">
+    <fileset dir="${shared.resource.dir}/" includes="derby*.jar" />
+  </library>
+
+  <!-- Datasource Configuration -->
+   <dataSource id="jpadatasource" jndiName="jdbc/ds1">
+    <jdbcDriver libraryRef="derbyJDBCLib" />
+    <properties.derby.embedded databaseName="db1" createDatabase="create" />
+  </dataSource> 
+  
+
+</server>
+
