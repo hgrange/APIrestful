@@ -1,7 +1,7 @@
 apiVersion: liberty.websphere.ibm.com/v1
 kind: WebSphereLibertyApplication
 metadata:
-  name: soaprestapi
+  name: itsm
   namespace: NAMESPACE
 spec:
   license:
