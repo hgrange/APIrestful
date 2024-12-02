@@ -13,15 +13,9 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <!-- Liberty configuration -->
-        <!-- tag::defaultHttpPort[] -->
         <liberty.var.http.port>9080</liberty.var.http.port>
-        <!-- end::defaultHttpPort[] -->
-        <!-- tag::defaultHttpsPort[] -->
-        <liberty.var.https.port>9445</liberty.var.https.port>
-        <!-- end::defaultHttpsPort[] -->
-        <!-- tag::appContextRoot[] -->
+        <liberty.var.https.port>9443</liberty.var.https.port>
         <liberty.var.app.context.root>/</liberty.var.app.context.root>
-        <!-- end::appContextRoot[] -->
     </properties>
 
     <dependencies>
