@@ -1,0 +1,37 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  name: itsm
+  namespace: reporter
+spec:
+  taskRunSpecs:
+    - pipelineTaskName: build
+      taskServiceAccountName: pipelines-sa-userid-1000
+  pipelineRef:
+    name: clone-build-deploy
+  workspaces:
+  - name: app-source
+    volumeClaimTemplate:
+      spec:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 1Gi
+  params:
+  - name: app
+    value: restsoapapi
+  - name: app-git-url
+    value: https://github.com/hgrange/APIrestful.git
+  - name: image
+    value: image-registry.openshift-image-registry.svc:5000/reporter/itsm:v1
+  - name: context
+    value: ./APIrestful/ITSM/
+  - name: manifest_dir
+    value: ./deploy/Operator/
+  - name: target_namespace
+    value: reporter
+  - name: scan-level
+    value: "HIGH,CRITICAL"
+  - name: sc_block
+    value: ocs-external-storagecluster-ceph-rbd
