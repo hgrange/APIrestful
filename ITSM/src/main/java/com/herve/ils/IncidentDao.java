@@ -35,7 +35,8 @@ public class IncidentDao  {
     }
 
     public void deleteIncident(Incident incident) {
-        em.remove(incident);
+    	Incident inc= em.merge(incident);
+        em.remove(inc);
     }
 
     public List<Incident> readAllIncidents() {

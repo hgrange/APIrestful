@@ -36,13 +36,18 @@ public class IncidentList {
 	
 	
 	//ArrayList<Incident> iList = new ArrayList<Incident>();
-	private List<Incident> incidents = new ArrayList<Incident>();
+	private List<Incident> incidents; 
 	
 	
 	private Map<Long, Boolean> checked = new HashMap<Long, Boolean>();
 	
 	
 	IncidentList() throws SQLException, NamingException {
+          incidents = loadList();
+	}
+	
+	public List<Incident> loadList() throws NamingException, SQLException {
+		List<Incident> iList = new ArrayList<Incident>();
 		InitialContext ctx = new InitialContext();
 		DataSource ds = (DataSource)ctx.lookup("jdbc/ds1");
 	
@@ -63,13 +68,14 @@ public class IncidentList {
 			 
 			 Incident incident = new Incident(checked, id, title, description, projet, ownerEmail,
 					 openingDate, closedDate, status);
-			 incidents.add(incident);
+			 iList.add(incident);
          }
-
+		 conn.close();
+		 return iList;
 	}
 
 	@Transactional
-	public void submit() {
+	public void changeState() {
 
 		for (Incident inc: incidents ) {
           if ( inc.getChecked() ) {		
@@ -93,7 +99,23 @@ public class IncidentList {
 		
     }
 	
-	public List<Incident> getIncidents() {
+	@Transactional
+	public void delete() throws NamingException, SQLException {
+     
+		for (Incident inc: incidents ) {
+          if ( inc.getChecked() ) {		
+        	inc.setChecked(false);  
+        	incidentDAO.deleteIncident(inc);
+          }
+		}
+    }
+	
+	public void refresh() {
+		
+	}
+
+	public List<Incident> getIncidents() throws NamingException, SQLException {
+		incidents = loadList();
 		return incidents;
 	}
 	
