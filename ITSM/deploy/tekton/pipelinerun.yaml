@@ -7,6 +7,8 @@ spec:
   taskRunSpecs:
     - pipelineTaskName: build
       taskServiceAccountName: pipelines-sa-userid-1000
+    - pipelineTaskName: deploy
+      taskServiceAccountName: pipelines-sa-userid-1000
   pipelineRef:
     name: clone-build-deploy
   workspaces:
