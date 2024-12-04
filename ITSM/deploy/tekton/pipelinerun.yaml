@@ -2,7 +2,7 @@ apiVersion: tekton.dev/v1beta1
 kind: PipelineRun
 metadata:
   name: itsm
-  namespace: reporter
+  namespace: cp4i
 spec:
   taskRunSpecs:
     - pipelineTaskName: build
