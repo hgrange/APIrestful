@@ -51,8 +51,8 @@ spec:
       name: db
   volumes:
   - name: db
-  persistentVolumeClaim:
-    claimName: itsm-db
+    persistentVolumeClaim:
+      claimName: itsm-db
 
   
     
