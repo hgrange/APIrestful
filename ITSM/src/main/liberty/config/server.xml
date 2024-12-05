@@ -15,7 +15,7 @@
   <httpAccessLogging id="accessLogging"/>  
   <httpEndpoint httpPort="${http.port}" httpsPort="${https.port}"
       accessLoggingRef="accessLogging" id="defaultHttpEndpoint" host="${host}" />
-  <webApplication location="simpleAPI.war" contextRoot="/"/>
+  <webApplication location="itsm.war" contextRoot="/"/>
   
    <!-- Derby Library Configuration -->
   <library id="derbyJDBCLib">
