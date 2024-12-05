@@ -69,6 +69,7 @@ public class CMDBList {
 			 cmdbs.add(cmdb);
          }
 		 conn.close();
+		 System.out.println("iList = "+iList.toString());
 		 return iList;
 	}
 	
