@@ -66,7 +66,7 @@ public class CMDBList {
 			
 			 
 			 CMDB cmdb = new CMDB(sid, cluster, namespace, project, ownerEmail);
-			 cmdbs.add(cmdb);
+			 iList.add(cmdb);
          }
 		 conn.close();
 		 System.out.println("iList = "+iList.toString());
