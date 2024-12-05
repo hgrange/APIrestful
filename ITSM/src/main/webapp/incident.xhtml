@@ -21,7 +21,7 @@
                     <h:selectBooleanCheckbox value="#{incident.checked}" />
                 </h:column> -->
                 <h:column>
-					<f:facet name="header">Change State</f:facet>    				
+					<f:facet name="header">Select</f:facet>    				
    					   <h:selectBooleanCheckbox value="#{incident.checked}" />
   				 </h:column>
                 
@@ -55,7 +55,9 @@
     				  #{incident.status}
    				</h:column>
 			</h:dataTable>
-			<h:commandButton value="submit" action="#{incidentList.submit}" />
+			<h:commandButton value="Change Status" action="#{incidentList.changeState}" />
+			<h:commandButton value="Delete" action="#{incidentList.delete}" />
+			<h:commandButton value="Refresh" action="#{incidentList.refresh}" />
 		</h:form>
 		<h:link value="CMDB page" outcome="cmdb" />
 	</h:body>
