@@ -43,6 +43,13 @@ public class CMDBList {
 	
 	
 	CMDBList() throws SQLException, NamingException {
+		 cmdbs = loadList();
+	}
+	
+	public List<CMDB> loadList() throws NamingException, SQLException {
+		
+		List<CMDB> iList = new ArrayList<CMDB>();
+		
 		InitialContext ctx = new InitialContext();
 		DataSource ds = (DataSource)ctx.lookup("jdbc/ds1");
 	
@@ -61,11 +68,12 @@ public class CMDBList {
 			 CMDB cmdb = new CMDB(sid, cluster, namespace, project, ownerEmail);
 			 cmdbs.add(cmdb);
          }
-
+		 conn.close();
+		 return iList;
 	}
-
 	
-	public List<CMDB> getCmdbs() {
+	public List<CMDB> getCmdbs() throws NamingException, SQLException {
+		cmdbs = loadList();
 		return cmdbs;
 	}
 	
