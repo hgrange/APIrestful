@@ -13,8 +13,8 @@
   </featureManager>
 
   <httpAccessLogging id="accessLogging"/>  
-  <httpEndpoint httpPort="${http.port}" httpsPort="${https.port}"
-      accessLoggingRef="accessLogging" id="defaultHttpEndpoint" host="${host}" />
+  <httpEndpoint httpPort="9080" httpsPort="9443"
+      accessLoggingRef="accessLogging" id="defaultHttpEndpoint" host="*" />
   <webApplication location="itsm.war" contextRoot="/"/>
   
    <!-- Derby Library Configuration -->
