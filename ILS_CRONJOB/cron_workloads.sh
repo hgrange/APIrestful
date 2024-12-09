@@ -29,11 +29,12 @@ NAMESPACE_REPORTER=$(oc get secret  -A | grep ibm-license-service-reporter-cert 
 token=$(oc get  secret ibm-license-service-reporter-token -n $NAMESPACE_REPORTER -o jsonpath='{.data.token}' | base64 -d)
 apihost=$(oc get route ibm-license-service-reporter  -n $NAMESPACE_REPORTER -o jsonpath='{.spec.host }')
 cmdbhost=$(oc get route -n reporter itsm -o jsonpath='{.spec.host}')
+cmdbUrl="http://localhost:9080"
+cmdbUrl="https://cmdbhost"
 
 curl -s -k -X "GET"  -H 'Content-Type: application/json'  https://$apihost/workloads?token=$token  > /tmp/workloads.json
 curl -s -k -X "GET"  -H 'Content-Type: application/json'  https://$apihost/custom_columns?token=$token > /tmp/custom_columns.json
-curl -s -k -X "GET"  -H 'Content-Type: application/json'  https://$cmdbhost/v2/cmdbs > /tmp/cmdbs.json
-#curl -s -k -X "GET"  -H 'Content-Type: application/json'  http://192.168.14.25:9080/v2/cmdbs > /tmp/cmdbs.json
+curl -s -k -X "GET"  -H 'Content-Type: application/json'  $cmdbUrl/v2/cmdbs > /tmp/cmdbs.json
 
 #"id":122,"kind":"Deployment","name":"es1-ibm-es-metrics","namespace":"cp4i","clusterId":"ClusterTest1","clusterName":"Cluster1","chargebackGroupName":"","replicas":1,"containers":[{"name":"metrics","image":"cp.icr.io/cp/ibm-eventstreams-metrics-collector@sha256:fb8f5b6d49c629007b930ee280f2f6055d8cb3d3e52d95cebd1ec3eca73dd0e9","charged":false,"components":null}],"annotations":"IBM_Event_Streams_for_Non_Production/VIRTUAL_PROCESSOR_CORE/IBM_Cloud_Pak_for_Integration/VIRTUAL_PROCESSOR_CORE/2:1","customColumns":[]},{
 
@@ -73,8 +74,8 @@ do
        if [ $( echo $tid | wc -c) -lt 10 ]; then 
 
           description="No assertion for Container $container, with components $components"
-          #curl -v -X 'POST' https://$cmdbhost/v2/incident -H 'accept: application/json' -H 'Content-Type: application/json' \
-	  tid=$(curl  -X 'POST' http://192.168.14.25:9080/v2/incident -H 'accept: application/json' -H 'Content-Type: application/json' \
+
+          tid=$(curl  -X 'POST' $cmdbUrl/v2/incident -H 'accept: application/json' -H 'Content-Type: application/json' \
               -d "$(post_incident)"  )
           echo $tid
           insert_data $recId $idcol_project $project
@@ -93,7 +94,7 @@ do
 
    if [ $( echo $tid | wc -c) -ge 10 ]; then 
        echo Retrieve Status !!!!!
-       status=$(curl -k -v http://192.168.14.25:9080/v2/incident/$tid | jq -r '.status')
+       status=$(curl -k -v $cmdbUrl/v2/incident/$tid | jq -r '.status')
        if [ $(echo $status | wc -c ) -le 1 ]; then
          insert_data $recId $idcol_ticket "0"
          insert_data $recId $idcol_status "_"
