@@ -1,7 +1,6 @@
-FROM registry.access.redhat.com/ubi8/ubi
-MAINTAINER Grant Steinfeld grant.steinfeld@ibm.com
-RUN yum install -y python3; yum clean all
-COPY ./requirements.txt /app/requirements.txt
+FROM registry.access.redhat.com/ubi9/ubi
+RUN yum install -y net-tools iproute wget; yum clean all
+COPY ./cron_workload.sh /app/requirements.txt
 WORKDIR /app
 RUN python3 -m pip install -r requirements.txt
 COPY ./src /app/src
