@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/ubi9/ubi
+FROM quay.io/openshift/origin-cli:latest
 RUN yum install -y net-tools iproute wget; yum clean all
 COPY ./cron_workload.sh /app/requirements.txt
 WORKDIR /app
