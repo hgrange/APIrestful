@@ -4,12 +4,11 @@ ARG APP
 
 #ENV http_proxy=http://172.17.0.1:3128
 #RUN cd /build/$APP && mvn dependency:go-offline -B
-
+RUN sleep 99999999
 COPY --chown=185:0 . /build/$APP
 
 #RUN echo $APP && cd /build/$APP && tar -xf m2.tar && mvn -o clean package -Dmaven.repo.local=/build/$APP/.m2/repository
 RUN echo $APP && cd /build/$APP && mvn  clean package 
-RUN sleep 99999999
 
 FROM icr.io/appcafe/websphere-liberty:kernel-java17-openj9-ubi
 ARG APP
