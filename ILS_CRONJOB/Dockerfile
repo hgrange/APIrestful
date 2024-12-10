@@ -1,9 +1,7 @@
 FROM quay.io/openshift/origin-cli:latest
 RUN yum install -y net-tools iproute wget; yum clean all
-COPY ./cron_workload.sh /app/requirements.txt
+COPY ./cron_workload.sh /app/cron_workload.sh
 WORKDIR /app
-RUN python3 -m pip install -r requirements.txt
-COPY ./src /app/src
-EXPOSE 7878
-ENTRYPOINT ["python3"]
-CMD ["src/main.py"]
+RUN chmod 755 /app/cron_workload.sh
+ENTRYPOINT ["/app/cron_workload.sh"]
+
