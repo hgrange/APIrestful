@@ -32,14 +32,19 @@
 
 				<h:column>
 					<f:facet name="header">_________Description___________</f:facet>
-    				  #{incident.description}
+    				  #{incident.truncDescription}
  				</h:column>
-
+ 				
 				<h:column>
 					<f:facet name="header">___Project___</f:facet>
     				  #{incident.project}
    				</h:column>
-
+   				
+			    <h:column>
+					<f:facet name="header">___Owner___</f:facet>
+    				  #{incident.ownerEmail}
+   				</h:column>
+   				
 				<h:column>
 					<f:facet name="header">_____Creation_____</f:facet>
     				  #{incident.openingDate}
@@ -58,6 +63,7 @@
 			<h:commandButton value="Change Status" action="#{incidentList.changeState}" />
 			<h:commandButton value="Delete" action="#{incidentList.delete}" />
 			<h:commandButton value="Refresh" action="#{incidentList.refresh}" />
+			<h:commandButton value="Init" action="#{incidentList.init}" />
 		</h:form>
 		<h:link value="CMDB page" outcome="cmdb" />
 	</h:body>
