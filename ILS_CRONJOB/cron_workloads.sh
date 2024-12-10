@@ -29,8 +29,8 @@ NAMESPACE_REPORTER=$(oc get secret  -A | grep ibm-license-service-reporter-cert 
 token=$(oc get  secret ibm-license-service-reporter-token -n $NAMESPACE_REPORTER -o jsonpath='{.data.token}' | base64 -d)
 apihost=$(oc get route ibm-license-service-reporter  -n $NAMESPACE_REPORTER -o jsonpath='{.spec.host }')
 cmdbhost=$(oc get route -n reporter itsm -o jsonpath='{.spec.host}')
-cmdbUrl="http://localhost:9080"
-cmdbUrl="https://cmdbhost"
+cmdbUrl="https://$cmdbhost"
+cmdbUrl="http://192.168.14.25:9080"
 
 curl -s -k -X "GET"  -H 'Content-Type: application/json'  https://$apihost/workloads?token=$token  > /tmp/workloads.json
 curl -s -k -X "GET"  -H 'Content-Type: application/json'  https://$apihost/custom_columns?token=$token > /tmp/custom_columns.json
@@ -52,7 +52,7 @@ idcol_comment=$( cat /tmp/custom_columns.json | sed 's/{"id":/\n{"id":/g' | grep
 idcol_status=$( cat /tmp/custom_columns.json | sed 's/{"id":/\n{"id":/g' | grep \"name\":\"ServiceNow\ status\"  | tr ',' '\12' | grep {\"id\" |  awk -F: '{ print $2 }')
 
 #for recId in $list_id
-for recId in 1                
+for recId in 1 2 3
 do
     rec=$(cat /tmp/workloads.json | jq ".[] | select (.id==$recId)" | jq -c )
     namespace=$( echo $rec | tr ',' '\12' | grep namespace | awk -F\" '{ print $4 }' )
@@ -66,14 +66,27 @@ do
     ownerEmail=$(echo $recCmdb | tr ',' '\12' | grep ownerEmail | awk -F\" '{ print $4 }' )
     echo $ownerEmail
     project=$(echo $recCmdb | tr ',' '\12' | grep project | awk -F\" '{ print $4 }' )
+    remediationNeeded=$(echo $rec | jq -r ".customColumns[] | select (.name==\"Remediation needed\")|.value")
+    read
     echo $project
     tid=$(retrieve_data  $recId $idcol_ticket)
-    if [ $( echo $charged | grep true | wc -l ) -eq 0 ]; then
-       #insert_data $recId $idcol_ticket "_"
-       #read
+    if [ $( echo $charged | grep null | wc -l ) -gt 0 ]; then
        if [ $( echo $tid | wc -c) -lt 10 ]; then 
 
           description="No assertion for Container $container, with components $components"
+
+          tid=$(curl  -X 'POST' $cmdbUrl/v2/incident -H 'accept: application/json' -H 'Content-Type: application/json' \
+              -d "$(post_incident)"  )
+          echo $tid
+          insert_data $recId $idcol_project $project
+          insert_data $recId $idcol_comment $description
+          insert_data $recId $idcol_ownerEmail $ownerEmail
+          insert_data $recId $idcol_ticket $tid
+       fi
+   elif [ $(echo "_"$remediationNeeded | grep -i yes | wc -l) -gt 0 ]; then
+       if [ $( echo $tid | wc -c) -lt 10 ]; then 
+
+          description="Wrong assertion for Container $container, with components $components"
 
           tid=$(curl  -X 'POST' $cmdbUrl/v2/incident -H 'accept: application/json' -H 'Content-Type: application/json' \
               -d "$(post_incident)"  )
@@ -91,6 +104,7 @@ do
          insert_data $recId $idcol_ownerEmail $ownerEmail
        fi
    fi 
+   read
 
    if [ $( echo $tid | wc -c) -ge 10 ]; then 
        echo Retrieve Status !!!!!
