@@ -76,11 +76,13 @@ public class IncidentService {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("incident/{incident}")
     @Transactional
-    public Incident getIncident(@DefaultValue("111111") @PathParam("incident") Long id ) {
-   
-        Incident incident = incidentDAO.readIncident(id);
-    	if (incident != null) {
-            return incident;
+    public Incident getIncident(@DefaultValue("111111") @PathParam("incident") Long id ) throws SQLException, NamingException {
+    	IncidentList il = new IncidentList();
+    	if ( ! il.getIncidents().isEmpty()) {
+          Incident incident = incidentDAO.readIncident(id);
+        	if (incident != null) {
+              return incident;
+        	}
     	}
     	return null;
     } 

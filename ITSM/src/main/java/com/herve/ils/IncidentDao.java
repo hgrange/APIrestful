@@ -12,7 +12,7 @@ import jakarta.inject.Named;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 
-@ApplicationScoped
+@RequestScoped
 @Named
 public class IncidentDao  {
 	List<Incident> lIncidents;
@@ -39,6 +39,10 @@ public class IncidentDao  {
         em.remove(inc);
     }
 
+    public void clear() {
+    	em.clear();
+    }
+    
     public List<Incident> readAllIncidents() {
     	lIncidents= em.createNamedQuery("Incident.findAll", Incident.class).getResultList();
     	return lIncidents;

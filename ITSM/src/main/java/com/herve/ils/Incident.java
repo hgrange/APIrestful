@@ -63,9 +63,18 @@ public class Incident {
 	public String getDescription() {
 		return description;
 	}
+	public String getTruncDescription() {
+		int len = description.length();
+		if (len  > 96) {
+		   return description.substring(0, 96);
+		} else {
+			return description;
+		}
+	}
 	public void setDescription(String description) {
 		this.description = description;
 	}
+	
 	public String getProject() {
 		return project;
 	}

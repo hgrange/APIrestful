@@ -28,12 +28,14 @@ import jakarta.persistence.Column;
 import jakarta.transaction.Transactional;
 
 @Named
-@ApplicationScoped
+@RequestScoped
 public class IncidentList {
 	
 	  @Inject
 	    private IncidentDao incidentDAO; 
-	
+	  
+	  InitialContext ctx = new InitialContext();
+	  DataSource ds = (DataSource)ctx.lookup("jdbc/ds1");
 	
 	//ArrayList<Incident> iList = new ArrayList<Incident>();
 	private List<Incident> incidents; 
@@ -48,8 +50,7 @@ public class IncidentList {
 	
 	public List<Incident> loadList() throws NamingException, SQLException {
 		List<Incident> iList = new ArrayList<Incident>();
-		InitialContext ctx = new InitialContext();
-		DataSource ds = (DataSource)ctx.lookup("jdbc/ds1");
+		
 	
 		Connection conn = ds.getConnection();
 		Statement stmt = conn.createStatement();
@@ -112,6 +113,18 @@ public class IncidentList {
 	
 	public void refresh() {
 		
+	}
+	
+    public void init() throws SQLException {
+  	
+		Connection conn = ds.getConnection();
+		Statement stmt = conn.createStatement();
+		int res = stmt.executeUpdate("truncate table Incidents");
+		
+		conn.close();
+		incidents.clear();
+		incidentDAO.clear();
+		System.out.println("End method init");
 	}
 
 	public List<Incident> getIncidents() throws NamingException, SQLException {
