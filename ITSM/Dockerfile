@@ -1,10 +1,11 @@
 FROM registry.access.redhat.com/ubi8/openjdk-17:latest as builder
+RUN sleep 99999999
 WORKDIR /build
 ARG APP
 
 #ENV http_proxy=http://172.17.0.1:3128
 #RUN cd /build/$APP && mvn dependency:go-offline -B
-RUN sleep 99999999
+
 COPY --chown=185:0 . /build/$APP
 
 #RUN echo $APP && cd /build/$APP && tar -xf m2.tar && mvn -o clean package -Dmaven.repo.local=/build/$APP/.m2/repository
