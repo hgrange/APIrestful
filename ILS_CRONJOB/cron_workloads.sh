@@ -1,3 +1,5 @@
+#!/bin/bash -xv
+
 post_incident() {
 curdate=$(date +"%Y/%m/%d %H:%M:%S")
 cat << EOF | jq -c
