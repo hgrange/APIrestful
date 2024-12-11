@@ -1,5 +1,4 @@
-FROM registry.access.redhat.com/ubi8/openjdk-17:latest as builder
-RUN sleep 99999999
+FROM registry.access.redhat.com/ubi9/openjdk-17:latest as builder
 WORKDIR /build
 ARG APP
 
