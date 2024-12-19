@@ -6,6 +6,7 @@ ARG APP
 #RUN cd /build/$APP && mvn dependency:go-offline -B
 
 COPY --chown=185:0 . /build/$APP
+RUN cat /etc/subuid
 
 #RUN echo $APP && cd /build/$APP && tar -xf m2.tar && mvn -o clean package -Dmaven.repo.local=/build/$APP/.m2/repository
 RUN echo $APP && cd /build/$APP && mvn  clean package 
