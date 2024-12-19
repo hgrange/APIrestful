@@ -21,6 +21,7 @@ spec:
     runAsNonRoot: true
     readOnlyRootFilesystem: false
   serviceAccount:
+    name: ta-operator
     mountToken: true
   autoscaling:
     minReplicas: 1
