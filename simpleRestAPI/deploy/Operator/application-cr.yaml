@@ -1,5 +1,5 @@
 apiVersion: liberty.websphere.ibm.com/v1
-kind: WebSphereLibertyApplication
+kind: OpenLibertyApplication
 metadata:
   name: soaprestapi
   namespace: NAMESPACE
