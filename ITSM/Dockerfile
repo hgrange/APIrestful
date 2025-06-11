@@ -5,7 +5,7 @@ ARG APP
 #ENV http_proxy=http://172.17.0.1:3128
 #RUN cd /build/$APP && mvn dependency:go-offline -B
 
-COPY --chown=185:0 . /build/$APP
+COPY --chown=1000:1000 . /build/$APP
 #RUN echo $APP && cd /build/$APP && tar -xf m2.tar && mvn -o clean package -Dmaven.repo.local=/build/$APP/.m2/repository
 RUN echo $APP && cd /build/$APP && mvn  clean package 
 
