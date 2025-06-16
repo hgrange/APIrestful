@@ -1,6 +1,6 @@
 FROM registry.access.redhat.com/ubi9/openjdk-17:latest as builder
-WORKDIR /build
 ARG APP
+WORKDIR /build/$APP
 
 #ENV http_proxy=http://172.17.0.1:3128
 #RUN cd /build/$APP && mvn dependency:go-offline -B
