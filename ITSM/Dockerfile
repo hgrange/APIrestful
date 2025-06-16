@@ -7,7 +7,10 @@ ARG APP
 
 COPY --chown=1000:1000 . /build/$APP
 #RUN echo $APP && cd /build/$APP && tar -xf m2.tar && mvn -o clean package -Dmaven.repo.local=/build/$APP/.m2/repository
-RUN echo $APP && cd /build/$APP && mvn  clean package 
+RUN echo $APP 
+RUN cd /build/$APP 
+RUN mvn  clean 
+RUN mvn package 
 
 FROM icr.io/appcafe/websphere-liberty:kernel-java17-openj9-ubi
 ARG APP
