@@ -9,7 +9,7 @@ spec:
   resources:
     requests:
       storage: 10Gi
-  storageClassName: ocs-external-storagecluster-ceph-rbd
+  storageClassName: STORAGECLASS
   volumeMode: Filesystem
 ---
 apiVersion: liberty.websphere.ibm.com/v1
