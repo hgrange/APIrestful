@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/ubi9/openjdk-17:latest as builder
+FROM registry.access.redhat.com/ubi9/openjdk-21:latest as builder
 ARG APP
 WORKDIR /build/$APP
 
@@ -12,7 +12,7 @@ RUN cd /build/$APP/
 RUN pwd && ls -la
 RUN mvn package 
 
-FROM icr.io/appcafe/websphere-liberty:kernel-java17-openj9-ubi
+FROM icr.io/appcafe/websphere-liberty:kernel-java21-openj9-ubi
 ARG APP
 ARG TLS=true
 USER 0
