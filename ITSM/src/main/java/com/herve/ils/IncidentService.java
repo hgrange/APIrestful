@@ -87,6 +87,20 @@ public class IncidentService {
     	return null;
     } 
     
+    @PUT
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("incident")
+    @Transactional
+      public long updateStatusIncident(Incident incident) {
+    	if (incidentDAO.findIncident(incident.getId()).isEmpty()) {
+            return 0;
+        }
+        incidentDAO.updateIncident(incident);
+     	return incident.getId();
+   } 
+    
+    
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
