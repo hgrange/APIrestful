@@ -9,7 +9,7 @@ spec:
   resources:
     requests:
       storage: 10Gi
-  storageClassName: STORAGECLASS
+  storageClassName: SC_BLOCK
   volumeMode: Filesystem
 ---
 apiVersion: liberty.websphere.ibm.com/v1
