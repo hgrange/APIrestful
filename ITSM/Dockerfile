@@ -11,7 +11,6 @@ RUN echo $APP
 RUN cd /build/$APP/
 RUN pwd && ls -la
 RUN mvn package 
-RUN sleep 999999999
 
 FROM icr.io/appcafe/websphere-liberty:kernel-java17-openj9-ubi
 ARG APP
