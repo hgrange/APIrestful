@@ -25,7 +25,7 @@
   <!-- Datasource Configuration -->
    <dataSource id="jpadatasource" jndiName="jdbc/ds1">
     <jdbcDriver libraryRef="derbyJDBCLib" />
-    <properties.derby.embedded databaseName="db1" createDatabase="create" />
+    <properties.derby.embedded databaseName="db/db1" createDatabase="create" />
   </dataSource> 
   
 
