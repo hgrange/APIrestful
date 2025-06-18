@@ -18,6 +18,7 @@
   <httpAccessLogging id="accessLogging"/>  
   <httpEndpoint httpPort="9080" httpsPort="9443"
       accessLoggingRef="accessLogging" id="defaultHttpEndpoint" host="*" />
+  <applicationManager autoExpand="true"/>
   <webApplication location="itsm.war" contextRoot="/"/>
   
    <!-- Derby Library Configuration -->
