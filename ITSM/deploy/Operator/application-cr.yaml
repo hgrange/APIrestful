@@ -47,7 +47,7 @@ spec:
   pullPolicy: Always
   manageLTPA: false
   volumeMounts:
-    - mountPath: /opt/ibm/wlp/output/defaultServer/db1
+    - mountPath: /opt/ibm/wlp/output/defaultServer/db
       name: db
   volumes:
   - name: db
