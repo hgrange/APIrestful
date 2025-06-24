@@ -20,8 +20,11 @@ public class OidcConfig {
     private String clientId;
     private String clientSecret;
     private String issuerUri;
+    private String internalIssuerUri;
 
     
+    
+
     OidcConfig() {
         try {
             var properties = new Properties();
@@ -29,6 +32,8 @@ public class OidcConfig {
             clientId = properties.getProperty("clientId");
             clientSecret = properties.getProperty("clientSecret");
             issuerUri = properties.getProperty("issuerUri");
+            internalIssuerUri = properties.getProperty("internalIssuerUri");
+           
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, "Failed to load oidc.properties", e);
         }
@@ -49,4 +54,13 @@ public class OidcConfig {
     public String getIssuerUri() {
         return issuerUri;
     }
+    public String getInternalIssuerUri() {
+        if (internalIssuerUri == null || internalIssuerUri.isEmpty()) {
+            LOGGER.warning("Internal issuer URI is not set in oidc.properties");
+            return issuerUri; // Fallback to the main issuer URI if internal is not set
+        }
+        LOGGER.info("getInternalIssuerUri() Using internal issuer URI: " + internalIssuerUri);
+        return internalIssuerUri;
+    }
+
 }
