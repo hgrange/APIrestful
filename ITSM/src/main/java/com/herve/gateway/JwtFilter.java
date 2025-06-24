@@ -85,7 +85,7 @@ public class JwtFilter implements Filter {
             String redirectUri = request.getRequestURL().toString();
             LOGGER.info("Redirect URI: " + redirectUri);
 
-            String targetUrl = oidcConfig.getIssuerUri() + "/protocol/openid-connect/token";
+            String targetUrl = oidcConfig.getInternalIssuerUri() + "/protocol/openid-connect/token";
             LOGGER.info("Target URL for token exchange: " + targetUrl);
 
             String urlEncodedPayload = "client_id=" + oidcConfig.getClientId() +
