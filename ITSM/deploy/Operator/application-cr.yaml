@@ -42,7 +42,7 @@ spec:
     targetCPUUtilizationPercentage: 60
   applicationImage: IMAGE_REFERENCE
   expose: true
-  manageTLS: true
+  manageTLS: false
   replicas: 1
   pullPolicy: Always
   manageLTPA: false
