@@ -49,10 +49,19 @@ spec:
   volumeMounts:
     - mountPath: /opt/ibm/wlp/output/defaultServer/db
       name: db
+    - mountPath: /opt/ibm/wlp/output/defaultServer/tls
+      name: tls
   volumes:
   - name: db
     persistentVolumeClaim:
       claimName: itsm-db
+  - name: tls
+    secret:
+      defaultMode: 420
+      secretName: itsm-tls
+      
+    
+  
 
   
     
