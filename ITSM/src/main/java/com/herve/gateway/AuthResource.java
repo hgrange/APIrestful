@@ -65,7 +65,7 @@ private static final Logger LOGGER = Logger.getLogger(AuthResource.class.getName
     response.sendRedirect(
         oidcConfig.getIssuerUri()+"/protocol/openid-connect/auth?client_id=" +
         oidcConfig.getClientId()+"&response_mode=form_post&response_type=code&login=true"+
-        "&redirect_uri="+url+"web/incident.xhtml");
+        "&redirect_uri="+url+"incident.xhtml");
        
   }
 }
