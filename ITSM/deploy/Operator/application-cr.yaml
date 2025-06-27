@@ -46,6 +46,9 @@ spec:
   service:
     annotations:
       service.beta.openshift.io/serving-cert-secret-name: itsm-svc-tls-ocp
+  route:
+    termination: reencrypt
+    certificateSecretRef: itsm-svc-tls-ocp
   replicas: 1
   pullPolicy: Always
   manageLTPA: false
