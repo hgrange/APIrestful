@@ -43,6 +43,12 @@ spec:
   applicationImage: IMAGE_REFERENCE
   expose: true
   manageTLS: true
+    service:
+    annotations:
+      service.beta.openshift.io/serving-cert-secret-name: itsm-svc-tls-ocp
+  route:
+    termination: reencrypt
+    certificateSecretRef: itsm-svc-tls-ocp
   replicas: 1
   pullPolicy: Always
   manageLTPA: false
@@ -58,7 +64,7 @@ spec:
   - name: tls
     secret:
       defaultMode: 420
-      secretName: itsm-tls
+      secretName: itsm-svc-tls-ocp
       
     
   
