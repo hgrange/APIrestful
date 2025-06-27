@@ -43,7 +43,7 @@ spec:
   applicationImage: IMAGE_REFERENCE
   expose: true
   manageTLS: true
-    service:
+  service:
     annotations:
       service.beta.openshift.io/serving-cert-secret-name: itsm-svc-tls-ocp
   route:
