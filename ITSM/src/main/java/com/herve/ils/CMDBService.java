@@ -58,7 +58,13 @@ public class CMDBService {
 
    private static final LogManager logManager = LogManager.getLogManager();
    private static final Logger LOGGER = Logger.getLogger(CMDBService.class.getName());
-
+   static {
+        try {
+            logManager.readConfiguration(CMDBSERVICE.class.getResourceAsStream("/logging.properties"));
+        } catch (IOException e) {
+            LOGGER.log(Level.SEVERE, "Failed to load logging configuration", e);
+        }
+    }
 	
     @GET
     @Produces(MediaType.APPLICATION_JSON)
