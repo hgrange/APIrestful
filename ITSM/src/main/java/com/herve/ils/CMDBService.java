@@ -50,7 +50,7 @@ import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 @RequestScoped
-@Path("/")
+@Path("/v2")
 public class CMDBService {
 	
     @Inject
