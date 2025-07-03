@@ -45,6 +45,9 @@ import jakarta.ws.rs.core.MultivaluedMap;
 import jakarta.ws.rs.core.UriInfo;
 import jakarta.ws.rs.FormParam;
 import jakarta.ws.rs.core.Response;
+import java.util.logging.Level;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
 
 @RequestScoped
 @Path("/")
@@ -52,6 +55,9 @@ public class CMDBService {
 	
     @Inject
     private CMDBDao cmdbDAO;
+
+   private static final LogManager logManager = LogManager.getLogManager();
+   private static final Logger LOGGER = Logger.getLogger(CMDBService.class.getName());
 
 	
     @GET
