@@ -50,7 +50,7 @@ private static final Logger LOGGER = Logger.getLogger(AuthResource.class.getName
         oidcConfig = new OidcConfig();
    }*/
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+    LOGGER.info("Method doGet:");
     Enumeration<String> headerNames = request.getHeaderNames();
     Enumeration<String> parameterNames = request.getParameterNames();
 
