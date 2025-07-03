@@ -45,8 +45,16 @@ import java.util.logging.Logger;
 public class AuthResource extends HttpServlet {
 
 private @Inject OidcConfig oidcConfig;
-
+  
+private static final LogManager logManager = LogManager.getLogManager();
 private static final Logger LOGGER = Logger.getLogger(AuthResource.class.getName());
+static {
+        try {
+            logManager.readConfiguration(AuthResource.class.getResourceAsStream("/logging.properties"));
+        } catch (IOException e) {
+            LOGGER.log(Level.SEVERE, "Failed to load logging configuration", e);
+        }
+    }  
 
   private static final long serialVersionUID = 1L;
  /*public void init(ServletConfig servletConfig) {
