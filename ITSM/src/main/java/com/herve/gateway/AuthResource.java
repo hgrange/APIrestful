@@ -71,7 +71,8 @@ public class AuthResource extends HttpServlet {
     String url = request.getRequestURL().toString();
     LOGGER.info("request URL: " + url);
     String redirect_url = url;
-    if (! url.endsWith("v2/cmdb") && !url.endsWith("incident.xhtml")) {
+    if (! url.endsWith("v2/cmdb") && !url.endsWith("v2/incidents") && 
+          !url.endsWith("incident.xhtml")) {
       LOGGER.info("URL ends with v2/cmdb or incident.xhtml");
       redirect_url = url + "incident.xhtml";
     }
