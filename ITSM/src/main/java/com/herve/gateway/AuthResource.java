@@ -71,10 +71,13 @@ public class AuthResource extends HttpServlet {
     String url = request.getRequestURL().toString();
     LOGGER.info("request URL: " + url);
     String redirect_url = url;
-    if (! url.endsWith("v2/cmdb") || !url.endsWith("v2/incidents") || 
-          !url.endsWith("incident.xhtml")) {
-      LOGGER.info("URL ends with v2/cmdb or incident.xhtml");
-      redirect_url = url + "incident.xhtml";
+    if (! url.endsWith("v2/cmdbs") ) {
+      if ( !url.endsWith("v2/incidents") ) { 
+          if (!url.endsWith("incident.xhtml") ) {
+               LOGGER.info("URL does not end with v2/cmdb, v2/incidents  or incident.xhtml");
+               redirect_url = url + "incident.xhtml";
+          }
+      }
     }
     LOGGER.info("response.sendRedirect: " + oidcConfig.getIssuerUri() + "/protocol/openid-connect/auth?client_id=" +
         oidcConfig.getClientId() + "&response_mode=form_post&response_type=code&login=true" +
