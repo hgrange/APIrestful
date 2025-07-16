@@ -10,20 +10,12 @@
 package com.herve.gateway;
 
 import java.io.IOException;
-import java.io.StringReader;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.util.Enumeration;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import jakarta.annotation.security.DeclareRoles;
 import jakarta.inject.Inject;
-import jakarta.json.Json;
-import jakarta.json.JsonObject;
-import jakarta.json.JsonReader;
 import jakarta.security.enterprise.authentication.mechanism.http.OpenIdAuthenticationMechanismDefinition;
 import jakarta.security.enterprise.authentication.mechanism.http.openid.LogoutDefinition;
 
@@ -64,9 +56,7 @@ public class AuthResource extends HttpServlet {
     LOGGER.info("Method doGet:");
     Enumeration<String> headerNames = request.getHeaderNames();
 
-    while (headerNames.hasMoreElements()) {
-      String headerName = headerNames.nextElement();
-      String headerValue = request.getHeader(headerName);
+   
       
     Enumeration<String> parameterNames = request.getParameterNames();
 
@@ -81,6 +71,7 @@ public class AuthResource extends HttpServlet {
       session.setAttribute("code", code);
       session.setAttribute("session_state", session_state);
     }
+
     String url = request.getRequestURL().toString();
     LOGGER.info("request URL: " + url);
     String redirect_url = url;
