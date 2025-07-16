@@ -10,12 +10,20 @@
 package com.herve.gateway;
 
 import java.io.IOException;
+import java.io.StringReader;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.util.Enumeration;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import jakarta.annotation.security.DeclareRoles;
 import jakarta.inject.Inject;
+import jakarta.json.Json;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonReader;
 import jakarta.security.enterprise.authentication.mechanism.http.OpenIdAuthenticationMechanismDefinition;
 import jakarta.security.enterprise.authentication.mechanism.http.openid.LogoutDefinition;
 
@@ -27,7 +35,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.logging.LogManager;
 
-@WebServlet("/")
+@WebServlet("/web")
 @OpenIdAuthenticationMechanismDefinition(providerURI = "${oidcConfig.issuerUri}", clientId = "${oidcConfig.clientId}", clientSecret = "${oidcConfig.clientSecret}", jwksConnectTimeout = 5000, jwksReadTimeout = 5000, redirectToOriginalResource = true, logout = @LogoutDefinition(notifyProvider = true))
 
 @DeclareRoles({ "admin", "user" })
@@ -55,6 +63,11 @@ public class AuthResource extends HttpServlet {
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     LOGGER.info("Method doGet:");
     Enumeration<String> headerNames = request.getHeaderNames();
+
+    while (headerNames.hasMoreElements()) {
+      String headerName = headerNames.nextElement();
+      String headerValue = request.getHeader(headerName);
+      
     Enumeration<String> parameterNames = request.getParameterNames();
 
     String code = request.getParameter("code");
@@ -71,14 +84,20 @@ public class AuthResource extends HttpServlet {
     String url = request.getRequestURL().toString();
     LOGGER.info("request URL: " + url);
     String redirect_url = url;
-    if (! url.endsWith("v2/cmdbs") ) {
-      if ( !url.endsWith("v2/incidents") ) { 
-          if (!url.endsWith("incident.xhtml") ) {
-               LOGGER.info("URL does not end with v2/cmdb, v2/incidents  or incident.xhtml");
-               redirect_url = url + "incident.xhtml";
+    if (!url.endsWith("v2/cmdbs")) {
+      if (!url.endsWith("v2/incidents")) {
+        if (!url.endsWith("cmdb.xhtml")) {
+          if (!url.endsWith("incident.xhtml")) {
+            if (!url.endsWith("favicon.ico")) {
+              LOGGER.info("URL does not end with v2/cmdb, v2/incidents, cmdb.xhtml, favicon.io or incident.xhtml");
+              redirect_url = url + "/incident.xhtml";
+            }
           }
+        }
       }
     }
+    // validation tu token OIDC bearer
+    // http://localhost:8080/realms/openliberty/protocol/openid-connect/token/introspect"
     LOGGER.info("response.sendRedirect: " + oidcConfig.getIssuerUri() + "/protocol/openid-connect/auth?client_id=" +
         oidcConfig.getClientId() + "&response_mode=form_post&response_type=code&login=true" +
         "&redirect_uri=" + redirect_url);

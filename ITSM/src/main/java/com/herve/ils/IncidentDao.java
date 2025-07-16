@@ -1,13 +1,8 @@
 package com.herve.ils;
 
-import java.io.Serializable;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.List;
 
-import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.context.RequestScoped;
-import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;

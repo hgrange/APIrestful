@@ -25,7 +25,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-@WebFilter({ "/cmdb*", "/web*", "/incident*", "*.xhtml" })
+@WebFilter(urlPatterns = { "/web*", "*.xhtml", "/v2/*" })
 public class JwtFilter implements Filter {
 
     private static final LogManager logManager = LogManager.getLogManager();
@@ -48,97 +48,159 @@ public class JwtFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
         LOGGER.info("In JwtFilter, path: " + request.getRequestURI());
+        String uri = request.getRequestURI();
+        if (uri.startsWith("/v2")) {
+            LOGGER.info("URI starts with /v2");
+            Enumeration<String> headerNames = request.getHeaderNames();
+            while (headerNames.hasMoreElements()) {
+                String headerName = headerNames.nextElement();
+                String headerValue = request.getHeader(headerName);
+                LOGGER.info("Header: " + headerName + " = " + headerValue);
+                if (headerName.equals("Authorization")) {
+                    LOGGER.info("Authorization header found: " + headerValue);
+                    // Check if the Authorization header starts with "Bearer "
+                    if (headerValue.startsWith("Bearer ")) {
+                        String token = headerValue.substring("Bearer ".length());
+                        LOGGER.info("Bearer token found: " + token);
+                        String targetUrl = oidcConfig.getIssuerUri() + "/protocol/openid-connect/token/introspect";
 
-        Enumeration<String> parameterNames = request.getParameterNames();
+                        String urlEncodedPayload = "client_id=" + oidcConfig.getClientId() +
+                                "&client_secret=" + oidcConfig.getClientSecret() +
+                                "&token=" + token;
+                        HttpClient client = HttpClient.newHttpClient();
+                        HttpRequest req = HttpRequest.newBuilder()
+                                .uri(URI.create(targetUrl))
+                                .header("Content-Type", "application/x-www-form-urlencoded")
+                                .header("Accept", "application/x-www-form-urlencoded")
+                                .POST(HttpRequest.BodyPublishers.ofString(urlEncodedPayload))
+                                .build();
 
-        String code = request.getParameter("code");
-        if (code != null) {
-            LOGGER.info("Received authorization code: " + code);
-        } else {
-            LOGGER.info("No authorization code found in request parameters.");
-        }
+                        LOGGER.info("Sending request to: " + targetUrl);
+                        HttpResponse<String> resp = null;
+                        try {
+                            resp = client.send(req, HttpResponse.BodyHandlers.ofString());
+                        } catch (IOException | InterruptedException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
 
-        String session_state = request.getParameter("session_state");
-        if (session_state != null) {
-            LOGGER.info("Received session state: " + session_state);
-        } else {
-            LOGGER.info("No session state found in request parameters.");
-        }
-
-        HttpSession session = request.getSession();
-        if (session == null) {
-            LOGGER.warning("No session found, creating a new one.");
-            session = request.getSession(true);
-        } else {
-            LOGGER.info("Session ID: " + session.getId());
-        }
-
-        String accessToken = null;
-
-        if (code == null || session_state == null) {
-            LOGGER.info("code = null, or session_state = null, checking if they are stored in the session attributes.");
-            code = (String) session.getAttribute("code");
-            session_state = (String) session.getAttribute("session_state");
-            accessToken = (String) session.getAttribute("accessToken");
-        } else {
-            LOGGER.info("code and session_state are not null, storing them in the session attributes with access token.");
-            String redirectUri = request.getRequestURL().toString();
-            LOGGER.info("Redirect URI: " + redirectUri);
-
-            String targetUrl = oidcConfig.getInternalIssuerUri() + "/protocol/openid-connect/token";
-            LOGGER.info("Target URL for token exchange: " + targetUrl);
-
-            String urlEncodedPayload = "client_id=" + oidcConfig.getClientId() +
-                    "&client_secret=" + oidcConfig.getClientSecret() +
-                    "&redirect_uri=" + redirectUri +
-                    "&code=" + code +
-                    "&grant_type=authorization_code";
-            LOGGER.info("URL-encoded payload for token exchange: " + urlEncodedPayload);
-
-            HttpClient client = HttpClient.newHttpClient();
-            HttpRequest req = HttpRequest.newBuilder()
-                    .uri(URI.create(targetUrl))
-                    .header("Content-Type", "application/x-www-form-urlencoded")
-                    .header("Accept", "application/x-www-form-urlencoded")
-                    .POST(HttpRequest.BodyPublishers.ofString(urlEncodedPayload))
-                    .build();
-            HttpResponse<String> resp;
-
-            try {
-                resp = client.send(req, HttpResponse.BodyHandlers.ofString());
-                LOGGER.info("Response status code: " + resp.statusCode());
-                if (resp.statusCode() == 200) {
-                    JsonReader jsonReader = Json.createReader(new StringReader(resp.body()));
-                    JsonObject jsonResp = jsonReader.readObject();
-                    accessToken = jsonResp.getString("access_token");
-                    LOGGER.info("Access token received: " + accessToken);
-                    LOGGER.info("Storing code, session_state, and accessToken in session attributes.");
-                    session.setAttribute("code", code);
-                    session.setAttribute("session_state", session_state);
-                    session.setAttribute("accessToken", accessToken);
-                } else {
-                    session.invalidate();
-                    LOGGER.info("Failed to retrieve access token, response code: " + resp.statusCode());
-                    LOGGER.info("session is invalid");
-                    code = null;
-                    session_state = null;
+                        LOGGER.info("Response from introspection: " + resp.body());
+                        // Check if the response is 200 OK
+                        if (resp.statusCode() == 200) {
+                            LOGGER.info("Introspection successful, status code: " + resp.statusCode());
+                            // Process the response body to extract token information
+                            String responseBody = resp.body();
+                            LOGGER.info("Response body: " + responseBody);
+                            JsonReader jsonReader = Json.createReader(new StringReader(responseBody));
+                            JsonObject jsonResp = jsonReader.readObject();
+                            Boolean active = jsonResp.getBoolean("active");
+                            LOGGER.info("Is the Access token still active: " + active);
+                            if (!active) {
+                                LOGGER.info("Token is not active, proceeding with request.");
+                                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                                response.getOutputStream().print("Unauthorized");
+                                throw new ServletException("OIDCToken is not active");
+                            }
+                            
+                        }
+                    }
                 }
-
-            } catch (
-
-            IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
             }
-        }
+        } else {
 
-        if (accessToken == null) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.getOutputStream().print("Unauthorized");
-            return;
+            Enumeration<String> parameterNames = request.getParameterNames();
+
+            String code = request.getParameter("code");
+            if (code != null) {
+                LOGGER.info("Received authorization code: " + code);
+            } else {
+                LOGGER.info("No authorization code found in request parameters.");
+            }
+
+            String session_state = request.getParameter("session_state");
+            if (session_state != null) {
+                LOGGER.info("Received session state: " + session_state);
+            } else {
+                LOGGER.info("No session state found in request parameters.");
+            }
+
+            HttpSession session = request.getSession();
+            if (session == null) {
+                LOGGER.warning("No session found, creating a new one.");
+                session = request.getSession(true);
+            } else {
+                LOGGER.info("Session ID: " + session.getId());
+            }
+
+            String accessToken = null;
+
+            if (code == null || session_state == null) {
+                LOGGER.info(
+                        "code = null, or session_state = null, checking if they are stored in the session attributes.");
+                code = (String) session.getAttribute("code");
+                session_state = (String) session.getAttribute("session_state");
+                accessToken = (String) session.getAttribute("accessToken");
+            } else {
+                LOGGER.info(
+                        "code and session_state are not null, storing them in the session attributes with access token.");
+                String redirectUri = request.getRequestURL().toString();
+                LOGGER.info("Redirect URI: " + redirectUri);
+
+                String targetUrl = oidcConfig.getInternalIssuerUri() + "/protocol/openid-connect/token";
+                LOGGER.info("Target URL for token exchange: " + targetUrl);
+
+                String urlEncodedPayload = "client_id=" + oidcConfig.getClientId() +
+                        "&client_secret=" + oidcConfig.getClientSecret() +
+                        "&redirect_uri=" + redirectUri +
+                        "&code=" + code +
+                        "&grant_type=authorization_code";
+                LOGGER.info("URL-encoded payload for token exchange: " + urlEncodedPayload);
+
+                HttpClient client = HttpClient.newHttpClient();
+                HttpRequest req = HttpRequest.newBuilder()
+                        .uri(URI.create(targetUrl))
+                        .header("Content-Type", "application/x-www-form-urlencoded")
+                        .header("Accept", "application/x-www-form-urlencoded")
+                        .POST(HttpRequest.BodyPublishers.ofString(urlEncodedPayload))
+                        .build();
+                HttpResponse<String> resp;
+
+                try {
+                    resp = client.send(req, HttpResponse.BodyHandlers.ofString());
+                    LOGGER.info("Response status code: " + resp.statusCode());
+                    if (resp.statusCode() == 200) {
+                        JsonReader jsonReader = Json.createReader(new StringReader(resp.body()));
+                        JsonObject jsonResp = jsonReader.readObject();
+                        accessToken = jsonResp.getString("access_token");
+                        LOGGER.info("Access token received: " + accessToken);
+                        LOGGER.info("Storing code, session_state, and accessToken in session attributes.");
+                        session.setAttribute("code", code);
+                        session.setAttribute("session_state", session_state);
+                        session.setAttribute("accessToken", accessToken);
+                    } else {
+                        session.invalidate();
+                        LOGGER.info("Failed to retrieve access token, response code: " + resp.statusCode());
+                        LOGGER.info("session is invalid");
+                        code = null;
+                        session_state = null;
+                    }
+
+                } catch (
+
+                IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+
+            if (accessToken == null) {
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.getOutputStream().print("Unauthorized");
+                return;
+            }
         }
         chain.doFilter(request, response);
 

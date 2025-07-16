@@ -11,28 +11,13 @@
 // end::copyright[]
 package com.herve.ils;
 
-import java.io.IOException;
-import java.io.StringReader;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
-
 import javax.naming.NamingException;
 
 
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
-import jakarta.json.Json;
-import jakarta.json.JsonArray;
-import jakarta.json.JsonObject;
-import jakarta.json.JsonReader;
-import jakarta.json.stream.JsonParser;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DefaultValue;
@@ -42,14 +27,7 @@ import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.QueryParam;
-import jakarta.ws.rs.core.Context;
-import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.MediaType;
-import jakarta.ws.rs.core.MultivaluedMap;
-import jakarta.ws.rs.core.UriInfo;
-import jakarta.ws.rs.FormParam;
-import jakarta.ws.rs.core.Response;
 
 @RequestScoped
 @Path("/")
