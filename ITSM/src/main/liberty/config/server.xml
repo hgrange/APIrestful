@@ -14,6 +14,7 @@
   </featureManager>
 
   <httpAccessLogging id="accessLogging"/>  
+  <keyStore id="defaultKeyStore" password="password"/>
   <httpEndpoint httpPort="9080" httpsPort="9443"
       accessLoggingRef="accessLogging" id="defaultHttpEndpoint" host="*" />
   <webApplication location="itsm.war" contextRoot="/"/>
