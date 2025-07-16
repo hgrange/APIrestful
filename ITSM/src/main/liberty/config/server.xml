@@ -15,7 +15,7 @@
      <feature>enterpriseBeansLite-4.0</feature>
   </featureManager>
 
-  <keyStore id="defaultKeyStore" location="tls/itsm.p12" password="${KEYSTORE_PASS}" />
+  <!-- <keyStore id="defaultKeyStore" location="tls/itsm.p12" password="${KEYSTORE_PASS}" /> -->
   
   <httpAccessLogging id="accessLogging"/>  
   <httpEndpoint httpPort="${http.port}" httpsPort="${https.port}"
