@@ -15,8 +15,8 @@
      <feature>enterpriseBeansLite-4.0</feature>
   </featureManager>
 
-  <keyStore id="defaultKeyStore" location="tls/key.p12" type="PKCS12" password="${KEYSTORE_PASS}"/>
-  <keyStore id="defaultTrustStore" location="tls/truststore.p12" type="PKCS12" password="${KEYSTORE_PASS}"/>
+  <keyStore id="defaultKeyStore" location="key.p12" type="PKCS12" password="${KEYSTORE_PASS}"/>
+  <keyStore id="defaultTrustStore" location="truststore.p12" type="PKCS12" password="${KEYSTORE_PASS}"/>
   <ssl id="defaultSSLConfig" keyStoreRef="defaultKeyStore" trustStoreRef="truststore.p12" DefaultCerts="true" />
   
   <httpAccessLogging id="accessLogging"/>  
