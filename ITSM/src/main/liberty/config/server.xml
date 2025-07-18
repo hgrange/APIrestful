@@ -16,7 +16,8 @@
   </featureManager>
 
   <keyStore id="defaultKeyStore" location="tls/key.p12" type="PKCS12" password="${KEYSTORE_PASS}"/>
-  <ssl id="defaultSSLConfig" keyStoreRef="defaultKeyStore" trustDefaultCerts="true" />
+  <keyStore id="defaultTrustStore" location="tls/truststore.p12" type="PKCS12" password="${KEYSTORE_PASS}"/>
+  <ssl id="defaultSSLConfig" keyStoreRef="defaultKeyStore" trustStoreRef="truststore.p12" DefaultCerts="true" />
   
   <httpAccessLogging id="accessLogging"/>  
   <httpEndpoint httpPort="${http.port}" httpsPort="${https.port}"
