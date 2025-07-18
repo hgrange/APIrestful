@@ -30,6 +30,6 @@ RUN features.sh
 # COPY --chown=1001:0  interim-fixes /opt/ibm/wlp/fixes/
 
 # This script will add the requested server configurations, apply any interim fixes and populate caches to optimize runtime
-RUN bash configure.sh 
+RUN bash -xv configure.sh 
 # Upgrade to production license 
 RUN java -jar /tmp/wlp-base-license.jar --acceptLicense /opt/ibm/wlp && rm /tmp/wlp-base-license.jar
