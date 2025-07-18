@@ -17,7 +17,7 @@
 
   <keyStore id="defaultKeyStore" location="key.p12" type="PKCS12" password="${KEYSTORE_PASS}"/>
   <keyStore id="defaultTrustStore" location="truststore.p12" type="PKCS12" password="${KEYSTORE_PASS}"/>
-  <ssl id="defaultSSLConfig" keyStoreRef="defaultKeyStore" trustStoreRef="truststore.p12" DefaultCerts="true" />
+  <ssl id="defaultSSLConfig" keyStoreRef="defaultKeyStore" trustStoreRef="defaultTrustStore" DefaultCerts="true" />
   
   <httpAccessLogging id="accessLogging"/>  
   <httpEndpoint httpPort="${http.port}" httpsPort="${https.port}"
