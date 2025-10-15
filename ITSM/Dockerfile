@@ -19,6 +19,7 @@ USER 1001
 COPY --from=builder --chown=1001:0  /build/$APP/target/*.*ar /config/apps/
 COPY --from=builder --chown=1001:0  /build/$APP/src/main/liberty/config/ /config/
 COPY --from=builder --chown=1001:0  /build/$APP/wlp-base-license.jar /tmp
+RUN sleep 999999
 COPY --from=builder --chown=1001:0 /build/$APP/m2/repository/org/apache/derby/derby/10.15.1.3/derby-10.15.1.3.jar /build/$APP/m2/repository/org/apache/derby/derbyshared/10.15.1.3/derbyshared-10.15.1.3.jar /build/$APP/m2/repository/org/apache/derby/derbytools/10.15.1.3/derbytools-10.15.1.3.jar /opt/ibm/wlp/usr/shared/resources
 
 # This script will add the requested XML snippets to enable Liberty features and grow image to be fit-for-purpose using featureUtility.
