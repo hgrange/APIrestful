@@ -60,7 +60,7 @@ spec:
   volumeMode: Filesystem
 ---
 apiVersion: liberty.websphere.ibm.com/v1
-kind: WebSphereLibertyApplication
+kind: OpenLibertyApplication
 metadata:
   name: itsm
   namespace: NAMESPACE
