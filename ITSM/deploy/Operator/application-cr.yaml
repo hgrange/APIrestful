@@ -33,7 +33,7 @@ spec:
         whenUnsatisfiable: ScheduleAnyway
   securityContext:
     runAsNonRoot: true
-    readOnlyRootFilesystem: false
+    readOnlyRootFilesystem: true
   serviceAccount:
     mountToken: true
   autoscaling:
@@ -49,10 +49,27 @@ spec:
   volumeMounts:
     - mountPath: /opt/ibm/wlp/output/defaultServer
       name: db
+    - mountPath:  /opt/ibm/wlp/usr/servers/defaultServer/configDropins/defaults
+      name: tmpfs-1 
+    - mountPath: /logs
+      name: tmpfs-2
+    - mountPath: /out
+      name: tmpfs-3
+    - mountPath: /tmp
+      name: tmpfs-4
   volumes:
   - name: db
     persistentVolumeClaim:
       claimName: itsm-db
+  - name: tmpfs-1
+    emptyDir: {}
+  - name: tmpfs-2
+    emptyDir: {}
+  - name: tmpfs-3
+    emptyDir: {}
+  - name: tmpfs-4
+    emptyDir: {}      
+  
 
   
     
