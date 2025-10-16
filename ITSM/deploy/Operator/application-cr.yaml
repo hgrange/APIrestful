@@ -1,3 +1,50 @@
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: itsm-ca-issuer
+  namespace: NAMESPACE
+spec:
+  ca:
+    secretName: itsm-ca-tls
+---
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: itsm-self-signed
+  namespace: NAMESPACE
+spec:
+  selfSigned: {}
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: itsm-ca-cert
+  namespace: NAMESPACE
+spec:
+  commonName: ITSM CA
+  duration: 8766h0m0s
+  isCA: true
+  issuerRef:
+    name: itsm-self-signed
+  secretName: itsm-ca-tls
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: itsm-svc-tls
+  namespace: NAMESPACE
+spec:
+  commonName: itsm.reporter.svc
+  dnsNames:
+  - itsm.reporter.svc
+  - itsm.reporter.svc.cluster.local
+  - itsm.reporter
+  - itsm
+  duration: 2160h0m0s
+  issuerRef:
+    name: itsm-ca-issuer
+  secretName: itsm-svc-tls
+---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -43,16 +90,21 @@ spec:
   applicationImage: IMAGE_REFERENCE
   expose: true
   manageTLS: true
-  service:
-    annotations:
-      service.beta.openshift.io/serving-cert-secret-name: itsm-svc-tls-ocp
   route:
     termination: reencrypt
-    certificateSecretRef: itsm-svc-tls-ocp
+    certificateSecretRef: itsm-svc-tls
   replicas: 1
   pullPolicy: Always
   manageLTPA: false
   volumeMounts:
+    - mountPath: /opt/ibm/wlp/output/defaultServer
+      name: tmpfs-1 
+    - mountPath: /logs
+      name: tmpfs-2
+    - mountPath: /out
+      name: tmpfs-3
+    - mountPath: /tmp
+      name: tmpfs-4
     - mountPath: /opt/ibm/wlp/output/defaultServer/db
       name: db
     - mountPath: /opt/ibm/wlp/output/defaultServer/tls
@@ -65,9 +117,11 @@ spec:
     secret:
       defaultMode: 420
       secretName: itsm-svc-tls-ocp
-      
-    
-  
-
-  
-    
+  - name: tmpfs-1
+    emptyDir: {}
+  - name: tmpfs-2
+    emptyDir: {}
+  - name: tmpfs-3
+    emptyDir: {}
+  - name: tmpfs-4
+    emptyDir: {}      
