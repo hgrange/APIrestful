@@ -116,7 +116,7 @@ spec:
   - name: tls
     secret:
       defaultMode: 420
-      secretName: itsm-svc-tls-ocp
+      secretName: itsm-svc-tls
   - name: tmpfs-1
     emptyDir: {}
   - name: tmpfs-2
