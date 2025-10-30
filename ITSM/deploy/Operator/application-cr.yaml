@@ -19,7 +19,7 @@ metadata:
   name: selfsigned-cert
   namespace: NAMESPACE
 spec:
-  secretName: selfsigned-cert-tls
+  secretName: itsm-svc-tls-ocp
   commonName: selfsigned-cert
   issuerRef:
     name: selfsigned-cluster-issuer
