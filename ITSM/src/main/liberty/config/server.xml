@@ -20,11 +20,17 @@
   <ssl id="defaultSSLConfig" keyStoreRef="defaultKeyStore" trustStoreRef="defaultTrustStore" DefaultCerts="true" />
   
   <httpAccessLogging id="accessLogging"/>  
+
+  <library id="external-lib">
+    <folder dir="/config/oidc"/>
+  </library>
+
   <httpEndpoint httpPort="${http.port}" httpsPort="${https.port}"
       accessLoggingRef="accessLogging" id="defaultHttpEndpoint" host="${host}" />
   <applicationManager autoExpand="true"/>
-  <webApplication location="itsm.war" contextRoot="/"/>
-  
+  <webApplication location="itsm.war" contextRoot="/">
+     <classloader commonLibraryRef="external-lib"/>
+  </webApplication>
    <!-- Derby Library Configuration -->
   <library id="derbyJDBCLib">
     <fileset dir="${shared.resource.dir}/" includes="derby*.jar" />
