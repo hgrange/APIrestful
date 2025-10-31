@@ -60,7 +60,7 @@ spec:
   volumeMode: Filesystem
 ---
 apiVersion: apps.openliberty.io/v1
-kind: OpenLibertyApplication
+kind: WebSphereLibertyApplication
 metadata:
   name: itsm
   namespace: NAMESPACE
@@ -112,7 +112,6 @@ spec:
     - mountPath: /config/oidc/oidc.properties
       name: oidc
       subPath: oidc.properties
-
   volumes:
   - name: db
     persistentVolumeClaim:
