@@ -109,6 +109,10 @@ spec:
       name: db
     - mountPath: /opt/ibm/wlp/output/defaultServer/tls
       name: tls
+    - mountPath: /config/oidc/oidc.properties
+      name: oidc
+      subPath: oidc.properties
+
   volumes:
   - name: db
     persistentVolumeClaim:
@@ -117,6 +121,10 @@ spec:
     secret:
       defaultMode: 420
       secretName: itsm-svc-tls
+  - name: oidc
+    secret:
+      defaultMode: 420
+      secretName: itsm-oidc-properties 
   - name: tmpfs-1
     emptyDir: {}
   - name: tmpfs-2
