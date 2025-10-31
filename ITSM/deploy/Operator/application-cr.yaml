@@ -59,7 +59,7 @@ spec:
   storageClassName: SC_BLOCK
   volumeMode: Filesystem
 ---
-apiVersion: apps.openliberty.io/v1
+apiVersion: liberty.websphere.ibm.com/v1
 kind: WebSphereLibertyApplication
 metadata:
   name: itsm
