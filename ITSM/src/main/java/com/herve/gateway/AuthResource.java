@@ -73,9 +73,8 @@ public class AuthResource extends HttpServlet {
     }
 
     String url = request.getRequestURL().toString();
-    LOGGER.info("request URL: " + url);
     String serverName = request.getServerName();
-    LOGGER.info("Server Name: " + serverName);
+    LOGGER.info("request URL: " + url);
     String redirect_url = url;
     if (!url.endsWith("v2/cmdbs")) {
       if (!url.endsWith("v2/incidents")) {
@@ -83,7 +82,6 @@ public class AuthResource extends HttpServlet {
           if (!url.endsWith("incident.xhtml")) {
             if (!url.endsWith("favicon.ico")) {
               LOGGER.info("URL does not end with v2/cmdb, v2/incidents, cmdb.xhtml, favicon.io or incident.xhtml");
-              //redirect_url = url + "/incident.xhtml";
               redirect_url = "https://"+serverName + "/incident.xhtml";
             }
           }
