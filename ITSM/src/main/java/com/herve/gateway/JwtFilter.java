@@ -25,7 +25,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-@WebFilter(urlPatterns = { "/web*", "*.xhtml", "/v2/*" })
+//@WebFilter(urlPatterns = { "/web*", "*.xhtml", "/v2/*" })
+@WebFilter(urlPatterns = { "/toto*"})    
 public class JwtFilter implements Filter {
 
     private static final LogManager logManager = LogManager.getLogManager();
