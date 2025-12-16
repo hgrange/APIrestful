@@ -80,7 +80,7 @@ spec:
         whenUnsatisfiable: ScheduleAnyway
   securityContext:
     runAsNonRoot: true
-    readOnlyRootFilesystem: false
+    readOnlyRootFilesystem: true
   serviceAccount:
     mountToken: true
   autoscaling:
@@ -132,3 +132,7 @@ spec:
     emptyDir: {}
   - name: tmpfs-4
     emptyDir: {}      
+  
+
+  
+    
