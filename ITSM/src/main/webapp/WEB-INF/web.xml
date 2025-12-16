@@ -9,7 +9,7 @@
     
     <context-param>
       <param-name>jakarta.faces.PROJECT_STAGE</param-name>
-      <param-value>Production</param-value>
+      <param-value>Development</param-value>
    </context-param>
     
    <servlet>
@@ -24,6 +24,6 @@
   </servlet-mapping>
     
   <welcome-file-list>
-    <welcome-file>incident.xhtml</welcome-file>
+    <welcome-file>/</welcome-file>
   </welcome-file-list>
 </web-app>

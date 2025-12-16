@@ -8,13 +8,19 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package com.herve.rest;
+package com.herve;
 
 import jakarta.ws.rs.core.Application;
+
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
+
+import com.herve.ils.CMDBService;
+
 import jakarta.ws.rs.ApplicationPath;
 
-@ApplicationPath("v2")
+@ApplicationPath("/v2")
 
 public class RestApplication extends Application {
-
+       
 }

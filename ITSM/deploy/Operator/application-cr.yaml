@@ -1,28 +1,49 @@
 apiVersion: cert-manager.io/v1
-kind: ClusterIssuer
+kind: Issuer
 metadata:
-  name: selfsigned-cluster-issuer
+  name: itsm-ca-issuer
+  namespace: NAMESPACE
+spec:
+  ca:
+    secretName: itsm-ca-tls
+---
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: itsm-self-signed
+  namespace: NAMESPACE
 spec:
   selfSigned: {}
 ---
-kind: Issuer
-metadata:
-  name: selfsigned-issuer
-  namespace: NAMESPACE
-spec:
-  selfSigned: {}
-----
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: selfsigned-cert
+  name: itsm-ca-cert
   namespace: NAMESPACE
 spec:
-  secretName: itsm-svc-tls-ocp
-  commonName: selfsigned-cert
+  commonName: ITSM CA
+  duration: 8766h0m0s
+  isCA: true
   issuerRef:
-    name: selfsigned-cluster-issuer
-    kind: ClusterIssuer
+    name: itsm-self-signed
+  secretName: itsm-ca-tls
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: itsm-svc-tls
+  namespace: NAMESPACE
+spec:
+  commonName: itsm.reporter.svc
+  dnsNames:
+  - itsm.reporter.svc
+  - itsm.reporter.svc.cluster.local
+  - itsm.reporter
+  - itsm
+  duration: 2160h0m0s
+  issuerRef:
+    name: itsm-ca-issuer
+  secretName: itsm-svc-tls
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -64,18 +85,19 @@ spec:
     mountToken: true
   autoscaling:
     minReplicas: 1
-    maxReplicas: 2
+    maxReplicas: 1
     targetCPUUtilizationPercentage: 60
   applicationImage: IMAGE_REFERENCE
   expose: true
   manageTLS: true
+  route:
+    termination: reencrypt
+    certificateSecretRef: itsm-svc-tls
   replicas: 1
   pullPolicy: Always
   manageLTPA: false
   volumeMounts:
     - mountPath: /opt/ibm/wlp/output/defaultServer
-      name: db
-    - mountPath:  /opt/ibm/wlp/usr/servers/defaultServer/configDropins/defaults
       name: tmpfs-1 
     - mountPath: /logs
       name: tmpfs-2
@@ -83,10 +105,25 @@ spec:
       name: tmpfs-3
     - mountPath: /tmp
       name: tmpfs-4
+    - mountPath: /opt/ibm/wlp/output/defaultServer/db
+      name: db
+    - mountPath: /opt/ibm/wlp/output/defaultServer/tls
+      name: tls
+    - mountPath: /config/oidc/oidc.properties
+      name: oidc
+      subPath: oidc.properties
   volumes:
   - name: db
     persistentVolumeClaim:
       claimName: itsm-db
+  - name: tls
+    secret:
+      defaultMode: 420
+      secretName: itsm-svc-tls
+  - name: oidc
+    secret:
+      defaultMode: 420
+      secretName: itsm-oidc-properties 
   - name: tmpfs-1
     emptyDir: {}
   - name: tmpfs-2

@@ -1,24 +1,37 @@
 <server description="Intro REST Guide Liberty server">
-    <featureManager>
-      <feature>appSecurity</feature>
-      <feature>restfulWS-3.1</feature>
-      <feature>jsonb-3.0</feature>
-      <feature>localConnector-1.0</feature>
-      <feature>servlet-6.0</feature>
-      <feature>xmlWS-4.0</feature>
-      <feature>cdi-4.0</feature>
-      <feature>persistence-3.1</feature>
-      <feature>faces-4.0</feature>
-   <!--    <feature>adminCenter-1.0</feature>
-      <feature>monitor-1.0</feature> -->
+  <featureManager>
+     <feature>mpRestClient-3.0</feature>
+     <feature>restfulWS-3.1</feature>
+     <feature>cdi-4.0</feature>
+     <feature>jsonb-3.0</feature>
+     <feature>localConnector-1.0</feature>
+     <feature>mpJwt-2.1</feature>
+     <feature>servlet-6.0</feature>
+     <feature>xmlWS-4.0</feature>
+     <feature>persistence-3.1</feature>
+     <feature>faces-4.0</feature>
+     <feature>pages-3.1</feature>
+     <feature>jndi-1.0</feature>
+     <!-- <feature>appSecurity-5.0</feature> -->
+     <feature>enterpriseBeansLite-4.0</feature>
   </featureManager>
 
-  <httpAccessLogging id="accessLogging"/>  
-  <keyStore id="defaultKeyStore" password="password"/>
-  <httpEndpoint httpPort="9080" httpsPort="9443"
-      accessLoggingRef="accessLogging" id="defaultHttpEndpoint" host="*" />
-  <webApplication location="itsm.war" contextRoot="/"/>
+  <keyStore id="defaultKeyStore" location="${server.output.dir}/resources/security/tls/key.p12" type="PKCS12" password="${KEYSTORE_PASS}"/>
+  <keyStore id="defaultTrustStore" location="${server.output.dir}/resources/security/tls/trust.p12" type="PKCS12" password="${KEYSTORE_PASS}"/>
+  <ssl id="defaultSSLConfig" keyStoreRef="defaultKeyStore" trustStoreRef="defaultTrustStore" DefaultCerts="true" />
   
+  <httpAccessLogging id="accessLogging"/>  
+
+  <library id="external-lib">
+    <folder dir="/config/oidc"/>
+  </library>
+
+  <httpEndpoint httpPort="${http.port}" httpsPort="${https.port}"
+      accessLoggingRef="accessLogging" id="defaultHttpEndpoint" host="${host}" />
+  <applicationManager autoExpand="true"/>
+  <webApplication location="itsm.war" contextRoot="/">
+     <classloader commonLibraryRef="external-lib"/>
+  </webApplication>
    <!-- Derby Library Configuration -->
   <library id="derbyJDBCLib">
     <fileset dir="${shared.resource.dir}/" includes="derby*.jar" />
@@ -27,7 +40,7 @@
   <!-- Datasource Configuration -->
    <dataSource id="jpadatasource" jndiName="jdbc/ds1">
     <jdbcDriver libraryRef="derbyJDBCLib" />
-    <properties.derby.embedded databaseName="db1" createDatabase="create" />
+    <properties.derby.embedded databaseName="db/db1" createDatabase="create" />
   </dataSource> 
   
 
