@@ -18,7 +18,7 @@
 
   <keyStore id="defaultKeyStore" location="${server.output.dir}/resources/security/tls/key.p12" type="PKCS12" password="${KEYSTORE_PASS}"/>
   <!-- <keyStore id="defaultTrustStore" location="${server.output.dir}/resources/security/tls/trust.p12" type="PKCS12" password="${KEYSTORE_PASS}"/> -->
-  <ssl id="defaultSSLConfig" keyStoreRef="defaultKeyStore" trustStoreRef="defaultTrustStore" DefaultCerts="true" />
+  <ssl id="defaultSSLConfig" keyStoreRef="defaultKeyStore" trustStoreRef="defaultTrustStore" DefaultCerts="true" sslProtocol="TLSv1.2" />
   
   <httpAccessLogging id="accessLogging"/>  
 
