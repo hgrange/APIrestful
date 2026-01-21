@@ -8,7 +8,8 @@ WORKDIR /build/$APP
 COPY --chown=1000:1000 . /build/$APP
 #RUN echo $APP && cd /build/$APP && pwd && ls && mvn -o package -Dmaven.repo.local=/build/$APP/m2/repository
 RUN echo $APP && cd /build/$APP/ && pwd && ls -la && mvn package 
-FROM icr.io/appcafe/websphere-liberty:kernel-java21-openj9-ubi-minimal
+
+FROM icr.io/appcafe/websphere-liberty:25.0.0.6-kernel-java21-openj9-ubi-minimal
 ARG APP
 ARG TLS=true
 USER 0
