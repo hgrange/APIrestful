@@ -123,7 +123,7 @@ spec:
   - name: tls
     secret:
       defaultMode: 420
-      secretName: itsm-svc-tls
+      secretName: itsm-svc-tls-ocp
   - name: oidc
     secret:
       defaultMode: 420
