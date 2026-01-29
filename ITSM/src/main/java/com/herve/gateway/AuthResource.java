@@ -74,6 +74,10 @@ public class AuthResource extends HttpServlet {
 
     String url = request.getRequestURL().toString();
     String serverName = request.getServerName();
+    String serverPort = Integer.toString(request.getServerPort());
+    String protocol = request.getRequestURL().toString().split("://")[0];
+    LOGGER.info("serverName: " + serverName);
+    LOGGER.info("serverPort: " + serverPort);
     LOGGER.info("request URL: " + url);
     String redirect_url = url;
     if (!url.endsWith("v2/cmdbs")) {
@@ -82,7 +86,11 @@ public class AuthResource extends HttpServlet {
           if (!url.endsWith("incident.xhtml")) {
             if (!url.endsWith("favicon.ico")) {
               LOGGER.info("URL does not end with v2/cmdb, v2/incidents, cmdb.xhtml, favicon.io or incident.xhtml");
-              redirect_url = "https://"+serverName + "/incident.xhtml";
+              if (serverPort.equals("80") || serverPort.equals("443")) {
+                redirect_url = protocol + "://" + serverName+ "/web/incident.xhtml";
+              } else {
+                redirect_url = protocol + "://" + serverName + ":" + serverPort + "/web/incident.xhtml";
+              }
             }
           }
         }

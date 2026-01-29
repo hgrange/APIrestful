@@ -25,8 +25,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-//@WebFilter(urlPatterns = { "/web*", "*.xhtml", "/v2/*" })
-   
+@WebFilter(urlPatterns = { "/web*", "*.xhtml", "/v2/*" })
 public class JwtFilter implements Filter {
 
     private static final LogManager logManager = LogManager.getLogManager();
@@ -169,6 +168,7 @@ public class JwtFilter implements Filter {
                 try {
                     resp = client.send(req, HttpResponse.BodyHandlers.ofString());
                     LOGGER.info("Response status code: " + resp.statusCode());
+                    
                     if (resp.statusCode() == 200) {
                         JsonReader jsonReader = Json.createReader(new StringReader(resp.body()));
                         JsonObject jsonResp = jsonReader.readObject();
@@ -179,6 +179,7 @@ public class JwtFilter implements Filter {
                         session.setAttribute("session_state", session_state);
                         session.setAttribute("accessToken", accessToken);
                     } else {
+                        LOGGER.info("Response body: " + resp.body());
                         session.invalidate();
                         LOGGER.info("Failed to retrieve access token, response code: " + resp.statusCode());
                         LOGGER.info("session is invalid");
