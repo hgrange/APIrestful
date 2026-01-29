@@ -1,22 +1,20 @@
 <server description="Intro REST Guide Liberty server">
-  <featureManager>
-     <feature>mpRestClient-3.0</feature>
-     <feature>restfulWS-3.1</feature>
-     <feature>cdi-4.0</feature>
-     <feature>jsonb-3.0</feature>
-     <!-- <feature>localConnector-1.0</feature> -->
-     <feature>restConnector-2.0</feature>
-     <feature>mpJwt-2.1</feature>
-     <feature>servlet-6.0</feature>
-     <feature>xmlWS-4.0</feature>
-     <feature>persistence-3.1</feature>
-     <feature>faces-4.0</feature>
-     <feature>pages-3.1</feature>
-     <feature>jndi-1.0</feature>
-     <feature>transportSecurity-1.0</feature>
-     <feature>appSecurity-5.0</feature>
-     <feature>enterpriseBeansLite-4.0</feature>
-  </featureManager>
+    <featureManager>
+        <feature>mpRestClient-3.0</feature>
+        <feature>restfulWS-3.1</feature>
+        <feature>cdi-4.0</feature>
+        <feature>jsonb-3.0</feature>
+        <feature>localConnector-1.0</feature>
+        <feature>mpJwt-2.1</feature>
+        <feature>servlet-6.0</feature>
+        <feature>xmlWS-4.0</feature>
+        <feature>persistence-3.1</feature>
+        <feature>faces-4.0</feature>
+        <feature>pages-3.1</feature>
+        <feature>jndi-1.0</feature>
+        <feature>appSecurity-5.0</feature>
+        <feature>enterpriseBeansLite-4.0</feature>
+    </featureManager>
 
   <keyStore id="defaultKeyStore" location="${server.output.dir}/resources/security/tls/key.p12" type="PKCS12" password="${KEYSTORE_PASS}"/>
   <!-- <keyStore id="defaultTrustStore" location="${server.output.dir}/resources/security/tls/trust.p12" type="PKCS12" password="${KEYSTORE_PASS}"/> -->
