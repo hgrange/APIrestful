@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="jakarta.faces.core" xmlns:jsf="jakarta.faces"
+	xmlns:h="jakarta.faces.html">
+<f:view>
+	<h:head>
+		<title>Incidents en cours</title>
+		<link rel="stylesheet" href="incidentstyles.css" />
+		<!--     <h:outputStylesheet name="styles.css" library="css"/> -->
+	</h:head>
+	<h:body>
+	   	    
+		<h1>Incidents en cours</h1>
+		
+		<h:form>
+			<h:dataTable value="#{incidentList.incidents}" var="incident"
+				styleClass="incidentTable" headerClass="incidentTableHeader"
+				rowClasses="incidentTableOddRow,incidentTableEvenRow">
+
+         <!--         <h:column>
+                    <h:selectBooleanCheckbox value="#{incident.checked}" />
+                </h:column> -->
+                <h:column>
+					<f:facet name="header">Select</f:facet>    				
+   					   <h:selectBooleanCheckbox value="#{incident.checked}" />
+  				 </h:column>
+                
+				<h:column>
+					<f:facet name="header">_____ID_____</f:facet>    				
+   					   #{incident.id}
+  				 </h:column>
+
+				<h:column>
+					<f:facet name="header">_________Description___________</f:facet>
+    				  #{incident.truncDescription}
+ 				</h:column>
+ 				
+				<h:column>
+					<f:facet name="header">___Project___</f:facet>
+    				  #{incident.project}
+   				</h:column>
+   				
+			    <h:column>
+					<f:facet name="header">___Owner___</f:facet>
+    				  #{incident.ownerEmail}
+   				</h:column>
+   				
+				<h:column>
+					<f:facet name="header">_____Creation_____</f:facet>
+    				  #{incident.openingDate}
+   				</h:column>
+   				
+   				<h:column>
+					<f:facet name="header">______Closed______</f:facet>
+    				  #{incident.closedDate}
+   				</h:column>
+   				
+   				<h:column>
+					<f:facet name="header">__Status__</f:facet>
+    				  #{incident.status}
+   				</h:column>
+			</h:dataTable>
+			<h:commandButton value="Change Status" action="#{incidentList.changeState}" />
+			<h:commandButton value="Delete" action="#{incidentList.delete}" />
+			<h:commandButton value="Refresh" action="#{incidentList.refresh}" />
+			<h:commandButton value="Init" action="#{incidentList.init}" />
+		</h:form>
+		<h:link value="CMDB page" outcome="cmdb" />
+	</h:body>
+</f:view>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="jakarta.faces.core" xmlns:jsf="jakarta.faces"
+	xmlns:h="jakarta.faces.html">
+<f:view>
+	<h:head>
+		<title>CMDB</title>
+		<link rel="stylesheet" href="incidentstyles.css" />
+		<!--     <h:outputStylesheet name="styles.css" library="css"/> -->
+	</h:head>
+	<h:body>
+	   	    
+		<h1>CMDB</h1>
+		
+		<h:form>
+			<h:dataTable value="#{cMDBList.cmdbs}" var="cmdb"
+				styleClass="incidentTable" headerClass="incidentTableHeader"
+				rowClasses="incidentTableOddRow,incidentTableEvenRow">
+				<h:column>
+					<f:facet name="header">____ID____</f:facet>    				
+   					   #{cmdb.sid}
+  				 </h:column>
+
+				<h:column>
+					<f:facet name="header">___Cluster___</f:facet>
+    				  #{cmdb.cluster}
+ 				</h:column>
+
+				<h:column>
+					<f:facet name="header">___NameSpace___</f:facet>
+    				  #{cmdb.namespace}
+   				</h:column>
+
+				<h:column>
+					<f:facet name="header">_____Project_____</f:facet>
+    				  #{cmdb.project}
+   				</h:column>
+   				
+   				<h:column>
+					<f:facet name="header">______Owner______</f:facet>
+    				  #{cmdb.ownerEmail}
+   				</h:column>
+			</h:dataTable>
+		</h:form>
+		<h:link value="Incidents page" outcome="incident" />
+	</h:body>
+</f:view>
+</html>
