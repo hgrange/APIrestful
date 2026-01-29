@@ -24,6 +24,6 @@
   </servlet-mapping>
     
   <welcome-file-list>
-    <welcome-file>/</welcome-file>
+    <welcome-file>/web</welcome-file>
   </welcome-file-list>
 </web-app>
