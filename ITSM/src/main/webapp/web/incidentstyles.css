@@ -1,21 +1,299 @@
-.incidentTable {   
-   border-collapse:collapse;
-   border:1px solid #000000;
+/* IBM Carbon Design System Custom Styles */
+/* This file provides additional styling to complement Carbon components */
+
+/* Body and Content Layout */
+.cds--body {
+    background-color: #f4f4f4;
+    font-family: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
 }
 
-.incidentTableHeader {
-   text-align:center;
-   background:none repeat scroll 0 0 #B5B5B5;
-   border-bottom:1px solid #000000;  
-   padding:2px;
+.cds--content {
+    padding: 2rem 0;
+    min-height: 100vh;
 }
 
-.incidentTableOddRow {
-   text-align:center;
-   background:none repeat scroll 0 0 #FFFFFFF;	
+/* Data Table Enhancements */
+.cds--data-table {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
 }
 
-.incidentTableEvenRow {
-   text-align:center;
-   background:none repeat scroll 0 0 #D3D3D3;
+.cds--data-table thead {
+    background-color: #e0e0e0;
 }
+
+.cds--data-table th {
+    color: #161616;
+    font-weight: 600;
+    text-align: left;
+    padding: 1rem;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.cds--data-table td {
+    padding: 1rem;
+    border-bottom: 1px solid #e0e0e0;
+    color: #525252;
+}
+
+.cds--data-table--zebra tbody tr:nth-child(odd) {
+    background-color: #ffffff;
+}
+
+.cds--data-table--zebra tbody tr:nth-child(even) {
+    background-color: #f4f4f4;
+}
+
+.cds--data-table tbody tr:hover {
+    background-color: #e5e5e5;
+}
+
+/* Checkbox styling in tables */
+.cds--data-table input[type="checkbox"] {
+    width: 1rem;
+    height: 1rem;
+    cursor: pointer;
+}
+
+/* Form Elements */
+.cds--form-item {
+    margin-bottom: 0;
+}
+
+.cds--label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #525252;
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1.125rem;
+}
+
+.cds--text-input {
+    width: 100%;
+    height: 2.5rem;
+    padding: 0 1rem;
+    border: none;
+    border-bottom: 1px solid #8d8d8d;
+    background-color: #f4f4f4;
+    color: #161616;
+    font-size: 0.875rem;
+    outline: 2px solid transparent;
+    outline-offset: -2px;
+    transition: background-color 70ms cubic-bezier(0.2, 0, 0.38, 0.9),
+                outline 70ms cubic-bezier(0.2, 0, 0.38, 0.9);
+}
+
+.cds--text-input:focus {
+    outline: 2px solid #0f62fe;
+    outline-offset: -2px;
+}
+
+/* Button Styles */
+.cds--btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.875rem 1rem;
+    border: none;
+    cursor: pointer;
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1.125rem;
+    text-decoration: none;
+    transition: background 70ms cubic-bezier(0.2, 0, 0.38, 0.9);
+    min-height: 3rem;
+}
+
+.cds--btn--primary {
+    background-color: #0f62fe;
+    color: #ffffff;
+}
+
+.cds--btn--primary:hover {
+    background-color: #0353e9;
+}
+
+.cds--btn--secondary {
+    background-color: #393939;
+    color: #ffffff;
+}
+
+.cds--btn--secondary:hover {
+    background-color: #4c4c4c;
+}
+
+.cds--btn--tertiary {
+    background-color: transparent;
+    border: 1px solid #0f62fe;
+    color: #0f62fe;
+}
+
+.cds--btn--tertiary:hover {
+    background-color: #0f62fe;
+    color: #ffffff;
+}
+
+.cds--btn--danger {
+    background-color: #da1e28;
+    color: #ffffff;
+}
+
+.cds--btn--danger:hover {
+    background-color: #ba1b23;
+}
+
+/* Link Styles */
+.cds--link {
+    color: #0f62fe;
+    text-decoration: none;
+    font-size: 0.875rem;
+    transition: color 70ms cubic-bezier(0.2, 0, 0.38, 0.9);
+}
+
+.cds--link:hover {
+    color: #0353e9;
+    text-decoration: underline;
+}
+
+/* Typography */
+.cds--type-heading-05 {
+    font-size: 2rem;
+    font-weight: 300;
+    line-height: 2.5rem;
+    letter-spacing: 0;
+    color: #161616;
+    margin-bottom: 1rem;
+}
+
+.cds--type-body-01 {
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1.25rem;
+    letter-spacing: 0.16px;
+    color: #525252;
+}
+
+/* Grid System Adjustments */
+.cds--grid {
+    max-width: 99rem;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.cds--row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: -1rem;
+    margin-right: -1rem;
+}
+
+.cds--col-lg-4,
+.cds--col-lg-12,
+.cds--col-lg-16 {
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+.cds--col-lg-4 {
+    flex: 0 0 25%;
+    max-width: 25%;
+}
+
+.cds--col-lg-12 {
+    flex: 0 0 75%;
+    max-width: 75%;
+}
+
+.cds--col-lg-16 {
+    flex: 0 0 100%;
+    max-width: 100%;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .cds--col-lg-4,
+    .cds--col-lg-12,
+    .cds--col-lg-16 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+    
+    .cds--type-heading-05 {
+        font-size: 1.5rem;
+        line-height: 2rem;
+    }
+    
+    .cds--data-table {
+        font-size: 0.75rem;
+    }
+    
+    .cds--data-table th,
+    .cds--data-table td {
+        padding: 0.5rem;
+    }
+}
+
+/* Custom utility classes */
+.carbon-toolbar {
+    display: flex;
+    gap: 0.5rem;
+    align-items: flex-end;
+    flex-wrap: wrap;
+}
+
+/* Ensure JSF components work with Carbon styles */
+form input[type="text"],
+form input[type="search"] {
+    width: 100%;
+}
+
+form button,
+form input[type="submit"],
+form input[type="button"] {
+    cursor: pointer;
+}
+
+/* Table column sizing for incident table */
+.cds--data-table th:nth-child(1),
+.cds--data-table td:nth-child(1) {
+    width: 5%;
+    text-align: center;
+}
+
+.cds--data-table th:nth-child(2),
+.cds--data-table td:nth-child(2) {
+    width: 8%;
+}
+
+.cds--data-table th:nth-child(3),
+.cds--data-table td:nth-child(3) {
+    width: 35%;
+}
+
+.cds--data-table th:nth-child(4),
+.cds--data-table td:nth-child(4) {
+    width: 12%;
+}
+
+.cds--data-table th:nth-child(5),
+.cds--data-table td:nth-child(5) {
+    width: 15%;
+}
+
+.cds--data-table th:nth-child(6),
+.cds--data-table td:nth-child(6) {
+    width: 10%;
+}
+
+.cds--data-table th:nth-child(7),
+.cds--data-table td:nth-child(7) {
+    width: 10%;
+}
+
+.cds--data-table th:nth-child(8),
+.cds--data-table td:nth-child(8) {
+    width: 10%;
+}
+
+/* Made with Bob */
