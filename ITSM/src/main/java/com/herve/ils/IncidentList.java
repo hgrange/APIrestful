@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
@@ -31,7 +32,7 @@ public class IncidentList {
 	
 	//ArrayList<Incident> iList = new ArrayList<Incident>();
 	private List<Incident> incidents; 
-	
+	private String filter;
 	
 	private Map<Long, Boolean> checked = new HashMap<Long, Boolean>();
 	
@@ -104,7 +105,11 @@ public class IncidentList {
     }
 	
 	public void refresh() {
-		
+		try {
+			incidents = loadList();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
     public void init() throws SQLException {
@@ -124,8 +129,35 @@ public class IncidentList {
 		return incidents;
 	}
 	
-	public void setIncidents(List incidents) {
-		this.incidents = incidents;	}
+	public void setIncidents(List<Incident> incidents) {
+		this.incidents = incidents;
+	}
+
+	public String getFilter() {
+		return filter;
+	}
+
+	public void setFilter(String filter) {
+		this.filter = filter;
+	}
+
+	public void clearFilter() {
+		this.filter = null;
+	}
+
+	public List<Incident> getFilteredIncidents() throws NamingException, SQLException {
+		if (filter == null || filter.trim().isEmpty()) {
+			return getIncidents();
+		}
+		String f = filter.toLowerCase();
+		return getIncidents().stream()
+				.filter(i -> (String.valueOf(i.getId()).toLowerCase().contains(f))
+						|| (i.getDescription() != null && i.getDescription().toLowerCase().contains(f))
+						|| (i.getProject() != null && i.getProject().toLowerCase().contains(f))
+						|| (i.getOwnerEmail() != null && i.getOwnerEmail().toLowerCase().contains(f))
+						|| (i.getStatus() != null && i.getStatus().toLowerCase().contains(f)))
+				.collect(Collectors.toList());
+	}
  
 	public Map<Long, Boolean> getChecked () {
 		return checked;

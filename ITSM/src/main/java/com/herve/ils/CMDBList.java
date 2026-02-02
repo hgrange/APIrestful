@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
@@ -26,6 +27,7 @@ public class CMDBList {
 	
 
 	private List<CMDB> cmdbs = new ArrayList<CMDB>();
+	private String filter;
 	
 	
 	private Map<Long, Boolean> checked = new HashMap<Long, Boolean>();
@@ -70,5 +72,38 @@ public class CMDBList {
 	public void setCmdbs(List cmdbs) {
 		this.cmdbs = cmdbs;	
 	}
-	
+
+	public String getFilter() {
+		return filter;
+	}
+
+	public void setFilter(String filter) {
+		this.filter = filter;
+	}
+
+	public void clearFilter() {
+		this.filter = null;
+	}
+
+	public void refresh() {
+		try {
+			cmdbs = loadList();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public List<CMDB> getFilteredCmdbs() throws NamingException, SQLException {
+		if (filter == null || filter.trim().isEmpty()) {
+			return getCmdbs();
+		}
+		String f = filter.toLowerCase();
+		return getCmdbs().stream()
+				.filter(c -> (c.getSid() != null && c.getSid().toLowerCase().contains(f))
+						|| (c.getCluster() != null && c.getCluster().toLowerCase().contains(f))
+						|| (c.getNamespace() != null && c.getNamespace().toLowerCase().contains(f))
+						|| (c.getProject() != null && c.getProject().toLowerCase().contains(f))
+						|| (c.getOwnerEmail() != null && c.getOwnerEmail().toLowerCase().contains(f)))
+				.collect(Collectors.toList());
+	}
 }
