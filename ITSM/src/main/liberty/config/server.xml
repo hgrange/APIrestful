@@ -1,4 +1,5 @@
-<server description="Intro REST Guide Liberty server">
+<server description="Sample Liberty server">
+
     <featureManager>
         <feature>mpRestClient-3.0</feature>
         <feature>restfulWS-3.1</feature>
@@ -6,6 +7,7 @@
         <feature>jsonb-3.0</feature>
         <feature>localConnector-1.0</feature>
         <feature>mpJwt-2.1</feature>
+        <feature>mpOpenAPI-3.1</feature>
         <feature>servlet-6.0</feature>
         <feature>xmlWS-4.0</feature>
         <feature>persistence-3.1</feature>
@@ -16,33 +18,27 @@
         <feature>enterpriseBeansLite-4.0</feature>
     </featureManager>
 
-  <keyStore id="defaultKeyStore" location="${server.output.dir}/resources/security/tls/key.p12" type="PKCS12" password="${KEYSTORE_PASS}"/>
-  <!-- <keyStore id="defaultTrustStore" location="${server.output.dir}/resources/security/tls/trust.p12" type="PKCS12" password="${KEYSTORE_PASS}"/> -->
-  <ssl id="defaultSSLConfig" keyStoreRef="defaultKeyStore" trustStoreRef="defaultTrustStore" DefaultCerts="true" sslProtocol="TLSv1.2" verifyHostname="false" />
-  <logging  traceSpecification="com.ibm.ws.ssl.*=all:com.ibm.ws.security.*=all" />
-  <httpAccessLogging id="accessLogging"/>  
+    <httpAccessLogging id="accessLogging"/>  
 
-  <library id="external-lib">
-    <folder dir="/config/oidc"/>
-  </library>
+    <httpEndpoint id="defaultHttpEndpoint"
+                  host="*" 
+                  accessLoggingRef="accessLogging"
+                  httpPort="${default.http.port}"
+                  httpsPort="${default.https.port}" />
+    
+    <applicationManager autoExpand="true"/>
+    <webApplication location="itsm.war" contextRoot="/" />
 
-  <httpEndpoint httpPort="${http.port}" httpsPort="${https.port}"
-      accessLoggingRef="accessLogging" id="defaultHttpEndpoint" host="${host}" />
-  <applicationManager autoExpand="true"/>
-  <webApplication location="itsm.war" contextRoot="/">
-     <classloader commonLibraryRef="external-lib"/>
-  </webApplication>
-   <!-- Derby Library Configuration -->
-  <library id="derbyJDBCLib">
-    <fileset dir="${shared.resource.dir}/" includes="derby*.jar" />
-  </library>
+    <!-- Derby Library Configuration -->
+    <library id="derbyJDBCLib">
+      <fileset dir="${shared.resource.dir}/" includes="derby*.jar" />
+    </library>
+    <logging consoleLogLevel="INFO" maxFileSize="300" maxFiles="5" traceSpecification="com.ibm.ws.webcontainer1*=all"/>
 
-  <!-- Datasource Configuration -->
-   <dataSource id="jpadatasource" jndiName="jdbc/ds1">
-    <jdbcDriver libraryRef="derbyJDBCLib" />
-    <properties.derby.embedded databaseName="db/db1" createDatabase="create" />
-  </dataSource> 
-  
+    <!-- Datasource Configuration -->
+    <dataSource id="jpadatasource" jndiName="jdbc/ds1">
+        <jdbcDriver libraryRef="derbyJDBCLib" />
+        <properties.derby.embedded databaseName="db1" createDatabase="create" />
+    </dataSource>
 
 </server>
-
