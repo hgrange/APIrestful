@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Documentation - Swagger UI</title>
+    <!-- IBM Carbon Design System -->
+    <link rel="stylesheet" href="https://unpkg.com/@carbon/styles@1.59.0/css/styles.min.css" />
+    <link rel="stylesheet" href="web/incidentstyles.css" />
+    <!-- Swagger UI -->
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/swagger-ui-dist@5.10.5/swagger-ui.css" />
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
+        .swagger-ui .topbar {
+            display: none;
+        }
+        .page-header {
+            background: #ffffff;
+            padding: 2rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+        .page-title {
+            font-size: 2rem;
+            font-weight: 300;
+            line-height: 2.5rem;
+            color: #161616;
+            margin: 0 0 0.5rem 0;
+        }
+        .page-description {
+            font-size: 0.875rem;
+            color: #525252;
+            margin: 0;
+        }
+        .swagger-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem 2rem 2rem;
+        }
+        .swagger-content {
+            background: #ffffff;
+            padding: 2rem;
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .nav-links {
+            margin-top: 2rem;
+            padding: 1rem 2rem;
+            background: #ffffff;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .nav-link {
+            color: #0f62fe;
+            text-decoration: none;
+            margin-right: 1rem;
+            font-size: 0.875rem;
+        }
+        .nav-link:hover {
+            color: #0353e9;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="page-header">
+        <div class="swagger-container">
+            <h1 class="page-title">API Documentation</h1>
+            <p class="page-description">Interactive API documentation powered by OpenAPI and Swagger UI</p>
+        </div>
+    </div>
+    
+    <div class="swagger-container">
+        <div class="swagger-content">
+            <div id="swagger-ui"></div>
+        </div>
+        
+        <div class="nav-links">
+            <a href="web/incident.xhtml" class="nav-link">Back to Incidents</a>
+            <a href="web/cmdb.xhtml" class="nav-link">CMDB page</a>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/swagger-ui-dist@5.10.5/swagger-ui-bundle.js"></script>
+    <script src="https://unpkg.com/swagger-ui-dist@5.10.5/swagger-ui-standalone-preset.js"></script>
+    <script>
+        window.onload = function() {
+            // Determine the base URL dynamically
+            const protocol = window.location.protocol;
+            const host = window.location.host;
+            const baseUrl = protocol + '//' + host;
+            
+            console.log('Loading OpenAPI from: ' + baseUrl + '/openapi');
+            
+            // Initialize Swagger UI
+            const ui = SwaggerUIBundle({
+                url: baseUrl + '/openapi',
+                dom_id: '#swagger-ui',
+                deepLinking: true,
+                presets: [
+                    SwaggerUIBundle.presets.apis,
+                    SwaggerUIStandalonePreset
+                ],
+                plugins: [
+                    SwaggerUIBundle.plugins.DownloadUrl
+                ],
+                layout: "StandaloneLayout",
+                tryItOutEnabled: true,
+                displayRequestDuration: true,
+                filter: true,
+                syntaxHighlight: {
+                    activate: true,
+                    theme: "agate"
+                },
+                onComplete: function() {
+                    console.log('Swagger UI loaded successfully');
+                },
+                onFailure: function(error) {
+                    console.error('Failed to load OpenAPI spec:', error);
+                    document.getElementById('swagger-ui').innerHTML = 
+                        '<div style="padding: 2rem; color: #da1e28;">' +
+                        '<h3>Failed to load API documentation</h3>' +
+                        '<p>Error: ' + error + '</p>' +
+                        '<p>Please ensure:</p>' +
+                        '<ul>' +
+                        '<li>The server is running</li>' +
+                        '<li>The OpenAPI endpoint is accessible at: <code>' + baseUrl + '/openapi</code></li>' +
+                        '<li>The mpOpenAPI-3.1 feature is enabled in server.xml</li>' +
+                        '</ul>' +
+                        '<p>Try accessing the OpenAPI spec directly: <a href="' + baseUrl + '/openapi" target="_blank">' + baseUrl + '/openapi</a></p>' +
+                        '</div>';
+                }
+            });
+            
+            window.ui = ui;
+        };
+    </script>
+</body>
+</html>

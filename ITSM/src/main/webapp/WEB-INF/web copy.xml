@@ -23,6 +23,7 @@
   </servlet-mapping>
   <servlet>
     <servlet-name>jakarta.ws.rs.core.Application</servlet-name>
+    <servlet-class>jakarta.faces.webapp.FacesServlet</servlet-class>
     <init-param>
       <param-name>jakarta.ws.rs.Application</param-name>
       <param-value>com.herve.RestApplication</param-value>

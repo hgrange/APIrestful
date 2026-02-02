@@ -5,57 +5,70 @@
 <f:view>
 	<h:head>
 		<title>CMDB</title>
+		<!-- IBM Carbon Design System -->
+		<link rel="stylesheet" href="https://unpkg.com/@carbon/styles@1.59.0/css/styles.min.css" />
+		<script type="module" src="https://unpkg.com/@carbon/web-components@2.11.0/dist/index.js"></script>
 		<link rel="stylesheet" href="incidentstyles.css" />
-		<!--     <h:outputStylesheet name="styles.css" library="css"/> -->
 	</h:head>
-	<h:body>
-	   	    
-		<div class="container">
-			<header>
-				<h1>Configuration Management Database (CMDB)</h1>
-				<p class="lead">Search and browse configuration items</p>
-			</header>
-		
-		<h:form id="cmdbForm">
-			<div class="toolbar">
-				<h:outputLabel for="search" value="Search:" />
-				<h:inputText id="search" value="#{cMDBList.filter}">
-					<f:ajax event="keyup" render="cmdbTable" />
-				</h:inputText>
-				<h:commandButton value="Clear" action="#{cMDBList.clearFilter}" immediate="true" />
-				<h:commandButton value="Refresh" action="#{cMDBList.refresh}" />
-			</div>
-			<h:dataTable id="cmdbTable" value="#{cMDBList.filteredCmdbs}" var="cmdb"
-				styleClass="incidentTable modernTable" headerClass="incidentTableHeader"
-				rowClasses="incidentTableOddRow,incidentTableEvenRow">
-				<h:column>
-					<f:facet name="header">ID</f:facet>    				
-   					   #{cmdb.sid}
-  				 </h:column>
-
-				<h:column>
-					<f:facet name="header">Cluster</f:facet>
-    				  #{cmdb.cluster}
- 				</h:column>
-
-				<h:column>
-					<f:facet name="header">Namespace</f:facet>
-    				  #{cmdb.namespace}
-   				</h:column>
-
-				<h:column>
-					<f:facet name="header">Project</f:facet>
-    				  #{cmdb.project}
-   				</h:column>
-   				
-   				<h:column>
-					<f:facet name="header">Owner</f:facet>
-    				  #{cmdb.ownerEmail}
-   				</h:column>
-			</h:dataTable>
-		</h:form>
-			<div class="footer">
-				<h:link value="Back to Incidents" outcome="incident" />
+	<h:body class="cds--body">
+		<div class="cds--content">
+			<div class="cds--grid">
+				<div class="cds--row">
+					<div class="cds--col-lg-16">
+						<h1 class="cds--type-heading-05">Configuration Management Database (CMDB)</h1>
+						<p class="cds--type-body-01" style="margin-bottom: 2rem;">Search and browse configuration items</p>
+					</div>
+				</div>
+				<h:form id="cmdbForm">
+					<div class="cds--row" style="margin-bottom: 1rem;">
+						<div class="cds--col-lg-4">
+							<div class="cds--form-item">
+								<label class="cds--label" for="search">Search:</label>
+								<h:inputText id="search" value="#{cMDBList.filter}" styleClass="cds--text-input">
+									<f:ajax event="keyup" render="cmdbTable" />
+								</h:inputText>
+							</div>
+						</div>
+						<div class="cds--col-lg-12" style="display: flex; gap: 0.5rem; align-items: flex-end;">
+							<h:commandButton value="Clear" action="#{cMDBList.clearFilter}" immediate="true" styleClass="cds--btn cds--btn--secondary" />
+							<h:commandButton value="Refresh" action="#{cMDBList.refresh}" styleClass="cds--btn cds--btn--primary" />
+						</div>
+					</div>
+					<div class="cds--row">
+						<div class="cds--col-lg-16">
+							<h:dataTable id="cmdbTable" value="#{cMDBList.filteredCmdbs}" var="cmdb"
+								styleClass="cds--data-table cds--data-table--zebra" headerClass="cds--data-table-header"
+								rowClasses="cds--data-table--zebra">
+								<h:column>
+									<f:facet name="header">ID</f:facet>
+									#{cmdb.sid}
+								</h:column>
+								<h:column>
+									<f:facet name="header">Cluster</f:facet>
+									#{cmdb.cluster}
+								</h:column>
+								<h:column>
+									<f:facet name="header">Namespace</f:facet>
+									#{cmdb.namespace}
+								</h:column>
+								<h:column>
+									<f:facet name="header">Project</f:facet>
+									#{cmdb.project}
+								</h:column>
+								<h:column>
+									<f:facet name="header">Owner</f:facet>
+									#{cmdb.ownerEmail}
+								</h:column>
+							</h:dataTable>
+						</div>
+					</div>
+				</h:form>
+				<div class="cds--row" style="margin-top: 2rem;">
+					<div class="cds--col-lg-16">
+						<h:link value="Back to Incidents" outcome="incident" styleClass="cds--link" style="margin-right: 1rem;" />
+						<a href="../swagger-ui.html" class="cds--link">API Documentation</a>
+					</div>
+				</div>
 			</div>
 		</div>
 	</h:body>
