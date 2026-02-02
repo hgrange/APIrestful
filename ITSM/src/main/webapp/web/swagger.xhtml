@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="jakarta.faces.core" xmlns:jsf="jakarta.faces"
+	xmlns:h="jakarta.faces.html">
+<f:view>
+	<h:head>
+		<title>API Documentation - Swagger UI</title>
+		<!-- IBM Carbon Design System -->
+		<link rel="stylesheet" href="https://unpkg.com/@carbon/styles@1.59.0/css/styles.min.css" />
+		<script type="module" src="https://unpkg.com/@carbon/web-components@2.11.0/dist/index.js"></script>
+		<link rel="stylesheet" href="incidentstyles.css" />
+		<!-- Swagger UI -->
+		<link rel="stylesheet" type="text/css" href="https://unpkg.com/swagger-ui-dist@5.10.5/swagger-ui.css" />
+		<style>
+			.swagger-ui .topbar {
+				display: none;
+			}
+			.swagger-ui {
+				font-family: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
+			}
+			.swagger-container {
+				background: #ffffff;
+				padding: 2rem;
+				border-radius: 4px;
+				box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+			}
+		</style>
+	</h:head>
+	<h:body class="cds--body">
+		<div class="cds--content">
+			<div class="cds--grid">
+				<div class="cds--row">
+					<div class="cds--col-lg-16">
+						<h1 class="cds--type-heading-05">API Documentation</h1>
+						<p class="cds--type-body-01" style="margin-bottom: 2rem;">
+							Interactive API documentation powered by OpenAPI and Swagger UI
+						</p>
+					</div>
+				</div>
+				<div class="cds--row">
+					<div class="cds--col-lg-16">
+						<div class="swagger-container">
+							<div id="swagger-ui"></div>
+						</div>
+					</div>
+				</div>
+				<div class="cds--row" style="margin-top: 2rem;">
+					<div class="cds--col-lg-16">
+						<h:link value="Back to Incidents" outcome="incident" styleClass="cds--link" style="margin-right: 1rem;" />
+						<h:link value="CMDB page" outcome="cmdb" styleClass="cds--link" />
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script src="https://unpkg.com/swagger-ui-dist@5.10.5/swagger-ui-bundle.js"></script>
+		<script src="https://unpkg.com/swagger-ui-dist@5.10.5/swagger-ui-standalone-preset.js"></script>
+		<script>
+			window.onload = function() {
+				// Determine the base URL dynamically
+				const protocol = window.location.protocol;
+				const host = window.location.host;
+				const baseUrl = protocol + '//' + host;
+				
+				// Initialize Swagger UI
+				const ui = SwaggerUIBundle({
+					url: baseUrl + '/openapi',
+					dom_id: '#swagger-ui',
+					deepLinking: true,
+					presets: [
+						SwaggerUIBundle.presets.apis,
+						SwaggerUIStandalonePreset
+					],
+					plugins: [
+						SwaggerUIBundle.plugins.DownloadUrl
+					],
+					layout: "StandaloneLayout",
+					tryItOutEnabled: true,
+					displayRequestDuration: true,
+					filter: true,
+					syntaxHighlight: {
+						activate: true,
+						theme: "agate"
+					}
+				});
+				
+				window.ui = ui;
+			};
+		</script>
+	</h:body>
+</f:view>
+</html>
