@@ -1,0 +1,111 @@
+<?xml version='1.0' encoding='utf-8'?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.herve.ils</groupId>
+    <artifactId>apiILS</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <maven.compiler.source>25</maven.compiler.source>
+        <maven.compiler.target>25</maven.compiler.target>
+
+    </properties>
+
+    <dependencies>
+
+        <!-- https://mvnrepository.com/artifact/org.json/json -->
+
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.13.2</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <finalName>${project.artifactId}</finalName>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.5.0</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>com.herve.CronWLs</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/lib</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.6.2</version>
+                <executions>
+                    <execution>
+                        <id>exec_1</id>
+                        <phase>deploy</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <executable>java</executable>
+                    <environmentVariables>
+                        <BOUCHON>false</BOUCHON>
+                        <DEBUG>true</DEBUG>
+                        <INSECURE>true</INSECURE>
+                    </environmentVariables>
+                    <arguments>
+                        <argument>-cp</argument>
+
+                        <argument>target/classes;target/lib/gson-2.12.1.jar</argument>
+                        <argument>-Djdk.internal.httpclient.disableHostnameVerification=TRUE</argument>
+                        <argument>-Djavax.net.ssl.trustStoreType=PKCS12</argument>
+                        <argument>-Djavax.net.ssl.trustStore=truststore.pkcs12</argument>
+                        <argument>-Djavax.net.ssl.trustStorePassword=password</argument>
+                        <!-- <argument>-Djavax.net.debug="ssl,handshake"</argument> -->
+                        <argument>
+                            -agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=localhost:58851</argument>
+                        <argument>com.herve.CronWLs</argument>
+                        <argument>ibm-license-service-reporter-reporter.apps.ocp.82.66.156.8.nip.io</argument>
+                        <argument>itsm-reporter.apps.ocp.82.66.156.8.nip.io</argument>
+                        <argument>itsm-reporter.apps.ocp.82.66.156.8.nip.io</argument>
+                    </arguments>
+
+                </configuration>
+            </plugin>
+
+            <!-- Plugin to run unit tests -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.22.2</version>
+            </plugin>
+
+        </plugins>
+    </build>
+</project>
