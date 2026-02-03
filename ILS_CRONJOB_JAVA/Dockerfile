@@ -10,7 +10,7 @@ COPY --chown=1000:0 . $BUILD_DIR
 RUN pwd && ls
 RUN mvn  clean package -DskipTests
 
-FROM ibm-semeru-runtimes:open-25-jre-noble
+FROM docker.io/ibm-semeru-runtimes:open-25-jre-noble
 ARG BUILD_DIR=/home/ubuntu
 USER 1000
 RUN chmod 755 /home/ubuntu
