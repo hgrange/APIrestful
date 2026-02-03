@@ -70,7 +70,9 @@ spec:
             - /home/ubuntu/exec.sh
             image: IMAGE_REFERENCE
             imagePullPolicy: Always
-            name: itsm
+            serviceAccount: itsm
+            serviceAccountName: itsm
+            name: workload_scan
             resources:
               limits:
                 cpu: 500m
