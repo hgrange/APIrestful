@@ -28,14 +28,19 @@ import com.google.gson.JsonParser;
 
 public final class Util {
 
+    // Debug flag - set to true to enable trace logging
+    private static final boolean DEBUG = "true".equalsIgnoreCase(System.getenv("DEBUG"));
+
     // Private constructor to prevent instantiation
     private Util() {
         throw new UnsupportedOperationException("Utility class cannot be instantiated");
     }
 
     public static HttpClient getHttpClient() throws NoSuchAlgorithmException, KeyManagementException {
+        if (DEBUG) System.out.println("[DEBUG] getHttpClient() - Creating HTTP client");
         HttpClient client = null;
         boolean insecure = ("true".equalsIgnoreCase(System.getenv("INSECURE"))) ? true : false;
+        if (DEBUG) System.out.println("[DEBUG] getHttpClient() - Insecure mode: " + insecure);
         SSLContext sslContext = null;
         if (insecure) {
             // Trust all certificates
@@ -64,12 +69,14 @@ public final class Util {
                     .sslContext(sslContext)
                     .sslParameters(sslParams)
                     .build();
+            if (DEBUG) System.out.println("[DEBUG] getHttpClient() - Created insecure HTTP client");
 
         } else {
             System.setProperty("javax.net.ssl.trustStore", "C:\\data\\workspaces\\ILS\\truststore.p12");
             System.setProperty("javax.net.ssl.trustStorePassword", "password");
             System.setProperty("javax.net.ssl.trustStoreType", "PKCS12");
             client = HttpClient.newHttpClient();
+            if (DEBUG) System.out.println("[DEBUG] getHttpClient() - Created secure HTTP client with truststore");
         }
 
         return client;
@@ -78,6 +85,7 @@ public final class Util {
     public static JsonArray download(String url, String filename)
             throws KeyManagementException, NoSuchAlgorithmException {
 
+        if (DEBUG) System.out.println("[DEBUG] download() - URL: " + url + ", Filename: " + filename);
         String records = null;
         JsonArray jaRecord = null;
         HttpClient client = getHttpClient();
@@ -92,6 +100,7 @@ public final class Util {
 
         try {
             resp = client.send(req, HttpResponse.BodyHandlers.ofString());
+            if (DEBUG) System.out.println("[DEBUG] download() - Response status: " + resp.statusCode());
 
             if (resp.statusCode() == 200) {
                 BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
@@ -103,6 +112,7 @@ public final class Util {
                     records += (char) intValueOfChar;
                 }
                 jaRecord = JsonParser.parseString(records).getAsJsonArray();
+                if (DEBUG) System.out.println("[DEBUG] download() - Parsed " + jaRecord.size() + " records");
                 for (JsonElement jer : jaRecord) {
                     String record = jer.getAsJsonObject().toString();
                     writer.write(record + "\n");
@@ -126,11 +136,13 @@ public final class Util {
     }
 
     public static String getToken(String fileName) {
+        if (DEBUG) System.out.println("[DEBUG] getToken() - Reading token from: " + fileName);
         BufferedReader reader;
         String token = null;
         try {
             reader = new BufferedReader(new FileReader(fileName));
             token = reader.readLine();
+            if (DEBUG) System.out.println("[DEBUG] getToken() - Token retrieved successfully");
 
             reader.close();
         } catch (IOException e) {
@@ -140,6 +152,7 @@ public final class Util {
     }
 
     public static JsonArray readFileData(String fileName) {
+        if (DEBUG) System.out.println("[DEBUG] readFileData() - Reading from: " + fileName);
         try {
             BufferedReader reader = new BufferedReader(new FileReader(fileName));
             String line = reader.readLine();
@@ -150,6 +163,7 @@ public final class Util {
                 line = reader.readLine();
             }
             reader.close();
+            if (DEBUG) System.out.println("[DEBUG] readFileData() - Read " + jArray.size() + " records");
             return jArray;
         } catch (IOException e) {
             e.printStackTrace();
@@ -160,25 +174,31 @@ public final class Util {
     // Method to persist custom column data
     public static int persist_data_customColumns(String apiHost, String token, int recordID, int columnID, String value)
             throws KeyManagementException, NoSuchAlgorithmException {
+        if (DEBUG) System.out.println("[DEBUG] persist_data_customColumns() - RecordID: " + recordID + ", ColumnID: " + columnID + ", Value: " + value);
         int status = -1;
         if (value != null) {
             String url = "https://" + apiHost + "/workloads/" + recordID + "/custom_columns/" + columnID + "?token="
                     + token;
             status = Util.put(url, "{\"value\":\"" + value + "\"}");
+            if (DEBUG) System.out.println("[DEBUG] persist_data_customColumns() - Status: " + status);
         }
         return status;
     }
 
     public static int clear_data_customColumns(String apiHost, String token, int recordID, int columnID)
             throws KeyManagementException, NoSuchAlgorithmException {
+        if (DEBUG) System.out.println("[DEBUG] clear_data_customColumns() - RecordID: " + recordID + ", ColumnID: " + columnID);
         int status = -1;
         String url = "https://" + apiHost + "/workloads/" + recordID + "/custom_columns/" + columnID + "?token="
                 + token;
         status = Util.delete(url, token);
+        if (DEBUG) System.out.println("[DEBUG] clear_data_customColumns() - Status: " + status);
         return status;
     }
 
     public static int post(String url, String payload) throws KeyManagementException, NoSuchAlgorithmException {
+        if (DEBUG) System.out.println("[DEBUG] post() - URL: " + url);
+        if (DEBUG) System.out.println("[DEBUG] post() - Payload: " + payload);
         // String url = "https://" + itsmHost + "/v2/incident?token=" + token;
         HttpClient client = Util.getHttpClient();
 
@@ -192,6 +212,7 @@ public final class Util {
 
         try {
             resp = client.send(req, HttpResponse.BodyHandlers.ofString());
+            if (DEBUG) System.out.println("[DEBUG] post() - Response status: " + resp.statusCode());
             if (!String.valueOf(resp.statusCode()).startsWith("20")) {
                 throw new RuntimeException("Failed to create incident, HTTP status code: " + resp.statusCode());
             }
@@ -209,6 +230,8 @@ public final class Util {
     }
 
     public static int put(String url, String payload) throws KeyManagementException, NoSuchAlgorithmException {
+        if (DEBUG) System.out.println("[DEBUG] put() - URL: " + url);
+        if (DEBUG) System.out.println("[DEBUG] put() - Payload: " + payload);
         // String url = "https://" + itsmHost + "/v2/incident?token=" + token;
         HttpClient client = Util.getHttpClient();
 
@@ -222,6 +245,7 @@ public final class Util {
 
         try {
             resp = client.send(req, HttpResponse.BodyHandlers.ofString());
+            if (DEBUG) System.out.println("[DEBUG] put() - Response status: " + resp.statusCode());
             if (!String.valueOf(resp.statusCode()).startsWith("20")) {
                 throw new RuntimeException("Failed to create incident, HTTP status code: " + resp.statusCode());
             }
@@ -238,6 +262,7 @@ public final class Util {
 
     public static int delete(String url, String token)
             throws KeyManagementException, NoSuchAlgorithmException {
+        if (DEBUG) System.out.println("[DEBUG] delete() - URL: " + url);
         int status = -1;
 
         HttpClient client = getHttpClient();
@@ -249,6 +274,7 @@ public final class Util {
                 .build();
         try {
             HttpResponse<String> resp = client.send(request, HttpResponse.BodyHandlers.ofString());
+            if (DEBUG) System.out.println("[DEBUG] delete() - Response status: " + resp.statusCode());
             if (!String.valueOf(resp.statusCode()).startsWith("20"))
                 throw new RuntimeException("Failed to create incident, HTTP status code: " + resp.statusCode());
             return resp.statusCode();
@@ -262,6 +288,7 @@ public final class Util {
 
     public static JsonObject get(String url)
             throws KeyManagementException, NoSuchAlgorithmException, IOException, InterruptedException {
+        if (DEBUG) System.out.println("[DEBUG] get() - URL: " + url);
         HttpClient client = Util.getHttpClient();
 
         HttpRequest req = HttpRequest.newBuilder()
@@ -272,15 +299,18 @@ public final class Util {
                 .build();
 
         HttpResponse<String> resp = client.send(req, HttpResponse.BodyHandlers.ofString());
+        if (DEBUG) System.out.println("[DEBUG] get() - Response status: " + resp.statusCode());
         String body = resp.body();
         JsonObject jResp = null;
         if ( ! body.isEmpty())
             jResp = JsonParser.parseString(body).getAsJsonObject();
+        if (DEBUG) System.out.println("[DEBUG] get() - Response body parsed successfully");
         return jResp;
 
     }
 
     public static String get(String url, String para) throws KeyManagementException, NoSuchAlgorithmException {
+        if (DEBUG) System.out.println("[DEBUG] get(url, para) - URL: " + url + ", Parameter: " + para);
 
         HttpClient client = Util.getHttpClient();
 
@@ -294,6 +324,7 @@ public final class Util {
 
         try {
             resp = client.send(req, HttpResponse.BodyHandlers.ofString());
+            if (DEBUG) System.out.println("[DEBUG] get(url, para) - Response status: " + resp.statusCode());
             StringReader sr = new StringReader(resp.body());
             int intValueOfChar;
             String response = "";
@@ -304,6 +335,7 @@ public final class Util {
             sr.close();
             JsonObject jResp = JsonParser.parseString(response).getAsJsonObject();
             String paraValue = (String) Util.map(jResp, para, "String");
+            if (DEBUG) System.out.println("[DEBUG] get(url, para) - Parameter value: " + paraValue);
             return paraValue;
         } catch (
 
@@ -318,6 +350,7 @@ public final class Util {
     }
 
     public static Object map(JsonObject jobj, String name, String type) {
+        if (DEBUG) System.out.println("[DEBUG] map() - Name: " + name + ", Type: " + type);
         JsonElement jsonElement = jobj.get(name);
         if (jsonElement instanceof JsonNull || jsonElement == null) {
             return null;
