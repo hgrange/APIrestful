@@ -72,7 +72,7 @@ spec:
             imagePullPolicy: Always
             serviceAccount: itsm
             serviceAccountName: itsm
-            name: workload_scan
+            name: workload-scan
             resources:
               limits:
                 cpu: 500m
