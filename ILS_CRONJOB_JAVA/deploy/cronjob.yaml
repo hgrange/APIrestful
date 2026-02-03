@@ -70,8 +70,6 @@ spec:
             - /home/ubuntu/exec.sh
             image: IMAGE_REFERENCE
             imagePullPolicy: Always
-            serviceAccount: itsm
-            serviceAccountName: itsm
             name: workload-scan
             resources:
               limits:
@@ -110,8 +108,10 @@ spec:
             secret:
               defaultMode: 420
               secretName: ibm-license-service-reporter-token
-          imagePullSecrets:
-          - name : quayio-secret
+          serviceAccount: itsm
+          serviceAccountName: itsm
+          #imagePullSecrets:
+          #- name : quayio-secret
   schedule: '*/1 * * * *'
   startingDeadlineSeconds: 3600
   successfulJobsHistoryLimit: 3
