@@ -11,6 +11,9 @@ import com.google.gson.JsonObject;
 import com.herve.Util;
 
 public class Incident {
+    // Debug flag - set to true to enable trace logging
+    private static final boolean DEBUG = "true".equalsIgnoreCase(System.getenv("DEBUG"));
+
 
     private String tid;
     private String title;
@@ -26,6 +29,7 @@ public class Incident {
 
     public Incident(String uri, String token, String ownerEmail, String project, String comment)
             throws KeyManagementException, NoSuchAlgorithmException {
+        if (DEBUG) System.out.println("[DEBUG] Incident.Incident() - Creating new incident");
         if (ownerEmail == null)
             ownerEmail = "Unknown";
         if (project == null)
@@ -50,11 +54,13 @@ public class Incident {
                 : comment;
         setTitle(title);
         setPayload();
+        if (DEBUG) System.out.println("[DEBUG] Incident.Incident() - TID: " + tid + ", Project: " + project + ", Owner: " + ownerEmail);
 
         Util.post(uri, payload);
     }
 
     public Incident(JsonObject jIncident) {
+        if (DEBUG) System.out.println("[DEBUG] Incident.Incident() - Creating incident from JsonObject");
         // {"checked":false,"closedDate":" ","description":"IBM software detected but no
         // annotations",
         // "id":1764065312,"openingDate":"251125 110835","ownerEmail":"lucile@bnp
@@ -62,6 +68,7 @@ public class Incident {
         // "status":"Open","truncDescription":"IBM software detected but no
         // annotations"}
         if (jIncident == null) {
+            if (DEBUG) System.out.println("[DEBUG] Incident.Incident() - JsonObject is null");
             setTid(null);
             setOpened_date(null);
             setClosed_date(null);
@@ -74,6 +81,7 @@ public class Incident {
             JsonObject jObj = jIncident.getAsJsonObject();
 
             setTid((String) Util.map(jObj, "id", "String"));
+            if (DEBUG) System.out.println("[DEBUG] Incident.Incident() - TID: " + getTid());
             setOpened_date((String) Util.map(jObj, "openingDate", "String"));
             setClosed_date((String) Util.map(jObj, "closedDate", "String"));
             setStatus((String) Util.map(jObj, "status", "String"));
@@ -86,6 +94,7 @@ public class Incident {
 
     public Incident(String uri, String tid)
             throws KeyManagementException, NoSuchAlgorithmException, IOException, InterruptedException {
+        if (DEBUG) System.out.println("[DEBUG] Incident.Incident() - Fetching incident from URI: " + uri + ", TID: " + tid);
         this.uri = uri;
         String url = uri + "/" + tid;
         JsonObject jResp = Util.get(url);
@@ -93,13 +102,16 @@ public class Incident {
     }
 
     public int syncStatus(String status) throws KeyManagementException, NoSuchAlgorithmException {
+        if (DEBUG) System.out.println("[DEBUG] Incident.syncStatus() - Syncing status to: " + status + " for TID: " + getTid());
         setStatus(status);
         setOpened_date(DateTimeFormatter.ofPattern("yy/MM/dd HH:mm:ss")
                 .withZone(ZoneId.of("Europe/Paris"))
                 .format(Instant.now()));
         setClosed_date(" ");
         setPayload();
-        return Util.put(getUri(), getPayload());
+        int result = Util.put(getUri(), getPayload());
+        if (DEBUG) System.out.println("[DEBUG] Incident.syncStatus() - Sync result: " + result);
+        return result;
     }
 
     public void setPayload() {

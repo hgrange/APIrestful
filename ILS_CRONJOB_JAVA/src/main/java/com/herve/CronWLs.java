@@ -33,7 +33,7 @@ public class CronWLs {
 
         String token = Util.getToken("lsrtoken/token");
         if (debug)
-            System.out.println("CronWLS:main() token=" + token);
+            System.out.println("[DEBUG] CronWLs.main() - Token: " + token);
         String apiHost = args[0];
         String cmdbHost = args[1];
         String itsmHost = args[2];
@@ -74,52 +74,52 @@ public class CronWLs {
             String line = WLreader.readLine();
             while (line != null) {
                 if (debug)
-                    System.out.println("CronWLS.main():Processing line: " + line);
+                    System.out.println("[DEBUG] CronWLs.main() - Processing line: " + line);
                 
                 JsonObject jWorkload = JsonParser.parseString(line).getAsJsonObject();
                 Workload workload = new Workload(jWorkload);
                 int recordID = workload.getId();
                 if (debug)
-                    System.out.println("CronWLS.main():recordID = " + recordID);
+                    System.out.println("[DEBUG] CronWLs.main() - RecordID: " + recordID);
                 CustomColumns customColumns = workload.getCustomColumns();
                 CMDB cmdb = cmdbs.getCMDB(workload.getClusterName(), workload.getNamespace());
 
                 String charged = workload.getContainers().getCharged();
                 if (debug)
-                    System.out.println("CronWLS.main():charged = " + charged);
+                    System.out.println("[DEBUG] CronWLs.main() - Charged: " + charged);
 
                 String annotations = workload.getAnnotations();
                 if (debug)
-                    System.out.println("CronWLS.main():annotations = " + annotations);
+                    System.out.println("[DEBUG] CronWLs.main() - Annotations: " + annotations);
 
                 String ticketID = (String) customColumns.getCustomColumnValue(Constants.COLUMN_SN_TICKET);
                 if (debug)
-                    System.out.println("CronWLS.main():ticketID = " + ticketID);
+                    System.out.println("[DEBUG] CronWLs.main() - TicketID: " + ticketID);
 
                 String samStatus = (String) customColumns
                         .getCustomColumnValue(Constants.COLUMN_SAM_STATUS);
                 if (debug)
-                    System.out.println("CronWLS.main():samStatus = " + samStatus);
+                    System.out.println("[DEBUG] CronWLs.main() - SAM Status: " + samStatus);
 
                 String remediationNeeded = (String) customColumns
                         .getCustomColumnValue(Constants.COLUMN_SAM_REMEDIATION_NEEDED);
                 if (debug)
-                    System.out.println("CronWLS.main():remediationNeeded = " + remediationNeeded);
+                    System.out.println("[DEBUG] CronWLs.main() - Remediation Needed: " + remediationNeeded);
 
                 if (remediationNeeded != null && remediationNeeded.equalsIgnoreCase("yes")) {
                     // SAM asks action on the ticket
                     if (debug)
-                        System.out.println("CronWLS.main():Remediation Needed , need ticket action");
+                        System.out.println("[DEBUG] CronWLs.main() - Remediation Needed, need ticket action");
 
                     if (ticketID == null) {
                         // Create a new ticket if it doesn't exist
                         if (debug)
-                            System.out.println("CronWLS.main():ticketId=null, no ticket, need to create one");
+                            System.out.println("[DEBUG] CronWLs.main() - TicketID is null, no ticket exists, need to create one");
                         String comment = (String) customColumns.getCustomColumnValue(Constants.COLUMN_COMMENT);
                         if (debug)
-                            System.out.println("CronWLS.main():comment = " + comment);
+                            System.out.println("[DEBUG] CronWLs.main() - Comment: " + comment);
                         if (comment == null) {
-                            comment = "CronWLS.main():No annotation or wrong annotation(s)";
+                            comment = "No annotation or wrong annotation(s)";
                         }
 
                         // Ticket Creation
@@ -155,7 +155,7 @@ public class CronWLs {
                         // ASM asks the ticket to be reopened, if the ticket is already created, the
                         // custom columns in Reporter are already updated
                         if (debug)
-                            System.out.println("CronWLS.main():ticketId!=null, ticket exists, need to s et it to Open");
+                            System.out.println("[DEBUG] CronWLs.main() - TicketID exists, ticket exists, need to set it to Open");
                         Incident incident = new Incident("https://"+itsmHost+"/v2/incident",ticketID);
                         incident.syncStatus("Open");
                         Util.persist_data_customColumns(apiHost, token, recordID,
@@ -170,7 +170,7 @@ public class CronWLs {
                     // null
                     // for the moment only when charged = "true"
                     if (debug)
-                        System.out.println("CronWLS.main():Remediation not Needed, annotations null and charged");
+                        System.out.println("[DEBUG] CronWLs.main() - Remediation not Needed, annotations null and charged");
 
                     Util.persist_data_customColumns(apiHost, token, recordID,
                             customColumnIDs.getColumnID(Constants.COLUMN_PROJECT), cmdb.getProject());
@@ -182,7 +182,7 @@ public class CronWLs {
                     Util.persist_data_customColumns(apiHost, token, recordID,
                             customColumnIDs.getColumnID(Constants.COLUMN_RECID), String.valueOf(recordID));
                     if (debug)
-                        System.out.println("CronWLS.main():persist Sam Status to Open");
+                        System.out.println("[DEBUG] CronWLs.main() - Persist SAM Status to Open");
                     Util.persist_data_customColumns(apiHost, token, recordID,
                             customColumnIDs.getColumnID(Constants.COLUMN_SAM_STATUS), "Open");
 
@@ -190,7 +190,7 @@ public class CronWLs {
                 } else {
                     // No need of Remediation , just enrich from CMDB
                     if (debug)
-                        System.out.println("CronWLS.main():No Remediation Needed, annotations not null or not charged");
+                        System.out.println("[DEBUG] CronWLs.main() - No Remediation Needed, annotations not null or not charged");
                     Util.persist_data_customColumns(apiHost, token, recordID,
                             customColumnIDs.getColumnID(Constants.COLUMN_PROJECT), cmdb.getProject());
                     Util.persist_data_customColumns(apiHost, token, recordID,
@@ -201,7 +201,7 @@ public class CronWLs {
                             customColumnIDs.getColumnID(Constants.COLUMN_RECID), String.valueOf(recordID));
                     if ( samStatus != null  ) {
                         if (debug)
-                            System.out.println("CronWLS.main():Clear Sam Status as no remediation is needed"); 
+                            System.out.println("[DEBUG] CronWLs.main() - Clear SAM Status as no remediation is needed");
                         Util.clear_data_customColumns(apiHost, token, recordID,
                             customColumnIDs.getColumnID(Constants.COLUMN_SAM_STATUS));
                     }
@@ -210,14 +210,14 @@ public class CronWLs {
                 if (ticketID != null) {
                     // the ticket exist in memory. We need to synchronise with the ITSM content
                     if (debug)
-                        System.out.println("CronWLS.main():TicketID != null, need to sync with ITSM");
+                        System.out.println("[DEBUG] CronWLs.main() - TicketID != null, need to sync with ITSM");
                     Incident incident = new Incident("https://"+itsmHost+"/v2/incident", ticketID);
                     String status = incident.getStatus();
                     if (status == null) {
                         // the ticket has been erased in the ITSM, we need to erase the custom columns
                         // in the workload table
                         if (debug)
-                            System.out.println("CronWLS.main():Ticket has been erased in ITSM, need to clear custom columns");
+                            System.out.println("[DEBUG] CronWLs.main() - Ticket has been erased in ITSM, need to clear custom columns");
                         Util.clear_data_customColumns(apiHost, token, recordID,
                                 customColumnIDs.getColumnID(Constants.COLUMN_SN_TICKET));
                         Util.clear_data_customColumns(apiHost, token, recordID,
@@ -230,7 +230,7 @@ public class CronWLs {
                         // the ticket still exists in the ITSM, we need to update ticket status in the
                         // workload table (Open|Closed)
                         if (debug)
-                            System.out.println("CronWLS.main():Ticket exists in ITSM, need to update status in custom columns");   
+                            System.out.println("[DEBUG] CronWLs.main() - Ticket exists in ITSM, need to update status in custom columns");
                         Util.persist_data_customColumns(apiHost, token, recordID,
                                 customColumnIDs.getColumnID(Constants.COLUMN_SN_STATUS),
                                 status);    

@@ -7,6 +7,9 @@ import com.herve.data.Workload.Container.Containers;
 import com.herve.Util;
 
 public class Workload {
+    // Debug flag - set to true to enable trace logging
+    private static final boolean DEBUG = "true".equalsIgnoreCase(System.getenv("DEBUG"));
+    
     private int id;
     private String kind;
     private String name;
@@ -23,6 +26,7 @@ public class Workload {
     private CustomColumns customColumns;
 
     public Workload(JsonObject jWorkload) {
+        if (DEBUG) System.out.println("[DEBUG] Workload.Workload() - Creating Workload from JsonObject");
         setId((int) Util.map(jWorkload, "id", "int"));
         setKind((String) Util.map(jWorkload, "kind", "String"));
         setName((String) Util.map(jWorkload, "name", "String"));
@@ -34,6 +38,7 @@ public class Workload {
         setContainers((JsonArray) Util.map(jWorkload, "containers", "JsonArray"));
         setAnnotations((String) Util.map(jWorkload, "annotations", "String"));
         setCustomColumns((JsonArray) Util.map(jWorkload, "customColumns", "JsonArray"));
+        if (DEBUG) System.out.println("[DEBUG] Workload.Workload() - ID: " + id + ", Name: " + name + ", Namespace: " + namespace + ", Cluster: " + clusterName);
     }
 
     public CustomColumns getCustomColumns() {

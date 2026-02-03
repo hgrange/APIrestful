@@ -8,12 +8,15 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 public class Containers {
+    // Debug flag - set to true to enable trace logging
+    private static final boolean DEBUG = "true".equalsIgnoreCase(System.getenv("DEBUG"));
 
     private List<Container> containers;
     private String charged;
 
 
     public Containers(JsonArray jaContainers) {
+        if (DEBUG) System.out.println("[DEBUG] Containers.Containers() - Creating Containers from JsonArray");
         List<Container> containers = new ArrayList<>();
 
         charged = "false";
@@ -33,6 +36,7 @@ public class Containers {
         }
         this.setCharged(charged);
         this.containers = containers;
+        if (DEBUG) System.out.println("[DEBUG] Containers.Containers() - Loaded " + containers.size() + " containers, Charged: " + charged);
     }
 
     public String getCharged() {

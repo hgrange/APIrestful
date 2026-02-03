@@ -11,14 +11,19 @@ import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 
 public class CustomColumn {
+    // Debug flag - set to true to enable trace logging
+    private static final boolean DEBUG = "true".equalsIgnoreCase(System.getenv("DEBUG"));
+
     private int id;
     private String name;
     private String value;
 
     public CustomColumn(JsonObject jCustomColumn) {
+        if (DEBUG) System.out.println("[DEBUG] CustomColumn.CustomColumn() - Creating CustomColumn from JsonObject");
         setId((int) this.map(jCustomColumn, "id", "int"));
         setName((String) this.map(jCustomColumn, "name", "String"));
         setValue((String) this.map(jCustomColumn, "value", "String"));
+        if (DEBUG) System.out.println("[DEBUG] CustomColumn.CustomColumn() - ID: " + id + ", Name: " + name + ", Value: " + value);
     }
 
     Object map(JsonObject jobj, String name, String type) {
@@ -40,6 +45,7 @@ public class CustomColumn {
     }
 
     public int persist(String apiHost, String token, int recordID, int columnID, String value) {
+        if (DEBUG) System.out.println("[DEBUG] CustomColumn.persist() - RecordID: " + recordID + ", ColumnID: " + columnID + ", Value: " + value);
 
         HttpClient client = HttpClient.newHttpClient();
 
@@ -55,10 +61,11 @@ public class CustomColumn {
         try {
             resp = client.send(req, HttpResponse.BodyHandlers.ofString());
             client.close();
+            if (DEBUG) System.out.println("[DEBUG] CustomColumn.persist() - Response status: " + resp.statusCode());
             if (resp.statusCode() == 200) {
                 setValue(value);
             } else {
-                System.out.println("Error: CustomColumn.setValue()" + resp.statusCode() + " " + resp.body());
+                System.out.println("[ERROR] CustomColumn.persist() - Failed with status " + resp.statusCode() + ": " + resp.body());
             }
             return resp.statusCode();
 
