@@ -1,4 +1,4 @@
-FROM maven:3.9.11-ibm-semeru-25-noble AS builder
+FROM docker.io/maven:3.9.11-ibm-semeru-25-noble AS builder
 ARG BUILD_DIR=/home/ubuntu
 WORKDIR $BUILD_DIR
 
