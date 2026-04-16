@@ -1,7 +1,8 @@
 FROM registry.access.redhat.com/ubi9/openjdk-21:latest as builder
 ARG APP
 WORKDIR /build/$APP
-
+LABEL labe1=label1
+LABEL label2=label2
 #ENV http_proxy=http://172.17.0.1:3128
 #RUN cd /build/$APP && mvn dependency:go-offline -B
 
